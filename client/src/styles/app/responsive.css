@@ -1,0 +1,44 @@
+/* ==========================================================================
+   ĐIỀU CHỈNH THEO BỀ NGANG cho các thành phần mới của bản Web App.
+
+   Lưu ý: lớp làm mới mobile nằm ở `styles/mobile.css` (nạp SAU file này) nên
+   những gì liên quan riêng tới giao diện điện thoại nên đặt bên đó, không
+   thêm vào đây.
+
+   Tách từ index.css — giữ nguyên thứ tự nạp.
+   Tác giả / Author : Rinka-Mod — © 2026. All rights reserved.
+   ========================================================================== */
+
+/* ≤ 860px: thanh công cụ nằm trong bottom sheet. Bỏ nền và viền của chính
+   nó để không lồng hai lớp kính, và xếp ô tìm kiếm chiếm trọn hàng trên. */
+@media (max-width: 860px) {
+  .sheet .toolbar {
+    padding: 0;
+    border: 0;
+    background: none;
+    box-shadow: none;
+    -webkit-backdrop-filter: none;
+    backdrop-filter: none;
+  }
+  .ltop {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+  .ltop .search {
+    grid-column: 1 / -1;
+  }
+  .sortselect__label {
+    display: none;
+  }
+  .filters .chip {
+    padding: 0.6rem 1rem;
+  }
+  .advpanel__grid {
+    grid-template-columns: repeat(auto-fit, minmax(132px, 1fr));
+  }
+}
+
+@media (max-width: 1023px) {
+  .car-page__grid {
+    grid-template-columns: 1fr;
+  }
+}

@@ -1,0 +1,36 @@
+/* ==========================================================================
+   MOBILE 00 — BIẾN & NỀN CHUNG
+   Tách từ mobile.css (giữ nguyên thứ tự nạp). Cả nhóm file trong ./mobile/
+   chỉ chạy ở ≤ 860px; xem `mobile.css` để biết thứ tự các phần.
+   Tác giả gốc / Original author: Rinka-Mod — © 2026. All rights reserved.
+   ========================================================================== */
+
+/* Dòng kết quả trong thư viện là thành phần riêng của giao diện mobile:
+   ẩn mặc định, chỉ bật trong media query bên dưới. */
+.mt-meta {
+  display: none;
+}
+
+@media (max-width: 860px) {
+  /* Bảng thiết kế thu gọn cho màn hình nhỏ: bo góc bớt "phồng" và mật độ
+     chữ dày hơn để nội dung không bị đẩy xuống quá sâu. */
+  :root {
+    --r-sm: 10px;
+    --r: 16px;
+    --r-lg: 22px;
+    --glow-red: 0 0 26px -8px rgba(224, 31, 45, 0.5);
+  }
+
+  .wrap {
+    width: min(100% - 2.1rem, var(--wrap));
+  }
+
+  /* --- Nhiễu phim: giữ chất "carbon" nhưng tĩnh, đỡ tốn GPU --- */
+  .grain {
+    opacity: 0.035;
+    animation: none;
+  }
+  .scanlines {
+    opacity: 0.22;
+  }
+}

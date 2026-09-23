@@ -1,0 +1,82 @@
+# TỔNG QUAN VỀ XE JDM (JAPANESE DOMESTIC MARKET)
+
+## 1. Định nghĩa JDM là gì?
+JDM viết tắt của **Japanese Domestic Market** (Thị trường nội địa Nhật Bản). Theo nghĩa gốc, thuật ngữ này chỉ những chiếc xe hơi, linh kiện và phụ tùng được sản xuất và phân phối chính thức tại thị trường Nhật Bản, tuân thủ các quy định, tiêu chuẩn khí thải và an toàn của quốc gia này (thường có tay lái nghịch - RHD). 
+
+Tuy nhiên, trên phạm vi toàn cầu, "JDM" đã trở thành một biểu tượng văn hóa ô tô, dùng để chỉ các dòng xe thể thao hiệu suất cao của Nhật Bản sản xuất trong giai đoạn hoàng kim (thập niên 1980, 1990 và đầu 2000), nổi tiếng với khả năng độ chế (tuning), động cơ bền bỉ và công nghệ tiên tiến.
+
+---
+
+## 2. Lịch sử hình thành và Thỏa thuận Quý ông (Gentlemen's Agreement)
+- **Thập niên 1980 - 1990:** Đây là giai đoạn bùng nổ kinh tế Nhật Bản (Bubble Economy), giúp các hãng xe bơm nguồn vốn khổng lồ vào việc nghiên cứu và phát triển (R&D) các dòng xe thể thao đột phá.
+- **Thỏa thuận 276 mã lực (Gentlemen's Agreement):** Vào năm 1989, Hiệp hội các nhà sản xuất ô tô Nhật Bản (JAMA) đã thông qua một thỏa thuận ngầm giới hạn công suất tối đa của tất cả các dòng xe thương mại bán ra tại Nhật ở mức 276 mã lực (206 kW) nhằm giảm thiểu tai nạn giao thông. Mặc dù vậy, nhiều chiếc xe thực tế khi xuất xưởng có công suất vượt qua con số này (thường được "giấu" qua các thông số kỹ thuật công bố). Thỏa thuận này chính thức chấm dứt vào năm 2004 với sự xuất hiện của Honda Legend.
+
+---
+
+## 3. Những mẫu xe JDM huyền thoại (The Legends)
+- **Nissan Skyline GT-R (R32, R33, R34):** 
+  - Mệnh danh là "Godzilla" trên đường đua.
+  - Sử dụng động cơ tăng áp kép huyền thoại **RB26DETT** kết hợp hệ dẫn động 4 bánh toàn thời gian **ATTESA E-TS**.
+- **Toyota Supra (A80 / MK4):**
+  - Sở hữu khối động cơ **2JZ-GTE** có khả năng chịu áp lực cực cao, dễ dàng độ lên hơn 1,000 mã lực mà không cần thay đổi phần cứng cốt lõi.
+- **Mazda RX-7 (FD3S):**
+  - Nổi bật với động cơ xoay **Wankel (Rotary engine) 13B-REW** dung tích nhỏ nhưng sinh công lớn, trọng lượng nhẹ và thiết kế khí động học vượt thời gian.
+- **Honda NSX (NA1/NA2):**
+  - Siêu xe Nhật Bản được phát triển với sự cố vấn của huyền thoại Công thức 1 Ayrton Senna, sử dụng khung gầm nhôm nguyên khối và động cơ VTEC mạnh mẽ.
+- **Mitsubishi Lancer Evolution (Evo I đến Evo X):**
+  - Đối thủ truyền kiếp của Subaru, trang bị động cơ **4G63T** mạnh mẽ và hệ dẫn động 4 bánh thông minh, sinh ra từ đường đua Rally (WRC).
+- **Subaru Impreza WRX STI:**
+  - Biểu tượng xe rally với động cơ boxer đặt nằm ngang (Flat-4) và màu sơn xanh đặc trưng kết hợp mâm vàng.
+- **Honda Civic Type R (EK9, EP3, FD2):**
+  - Biểu tượng xe hatchback hiệu suất cao dẫn động cầu trước (FF), nổi tiếng với động cơ hút khí tự nhiên vòng tua máy cao (High-revving VTEC).
+
+---
+
+## 4. Các dòng động cơ JDM biểu tượng
+- **Toyota 2JZ-GTE:** Động cơ I6 huyền thoại về độ bền và khả năng chịu tải.
+- **Nissan RB26DETT:** Động cơ I6 tăng áp kép nổi danh của dòng GT-R.
+- **Mitsubishi 4G63T:** Động cơ I4 tăng áp cực kỳ uy lực trong các giải đua địa hình.
+- **Honda B-series & K-series:** Các dòng động cơ hút khí tự nhiên với công nghệ van biến thiên VTEC nổi tiếng.
+- **Mazda 13B-REW:** Động cơ xoay độc đáo mang lại cảm giác lái phấn khích.
+
+---
+
+## 5. Văn hóa JDM và Cộng đồng
+- **Văn hóa độ xe (Tuning culture):** Các thương hiệu aftermarket nổi tiếng toàn cầu như HKS, GReddy, Spoon Sports, Mugen, Mines, VeilSide.
+- **Drift Culture (Touge & D1GP):** Khởi nguồn từ những cuộc đua trái phép trên các cung đường đèo núi Nhật Bản (Touge), sau đó phát triển thành môn thể thao chuyên nghiệp (D1 Grand Prix, Formula Drift) với các bậc thầy như Keiichi Tsuchiya ("Drift King").
+- **Ảnh hưởng truyền thông:** Văn hóa JDM lan tỏa mạnh mẽ ra toàn cầu nhờ các bộ anime/manga như *Initial D*, loạt phim điện ảnh *Fast & Furious*, và các tựa game huyền thoại như *Gran Turismo*, *Need for Speed*.
+
+---
+
+## 6. Xu hướng JDM hiện tại và tương lai
+- **Giá trị sưu tầm:** Những chiếc xe JDM nguyên bản thập niên 90 đang có giá trị tăng phi mã trên thị trường quốc tế (nhiều chiếc R34 GT-R hoặc Supra MK4 có giá hàng trăm nghìn USD).
+- **Restomod:** Xu hướng tân trang kết hợp công nghệ hiện đại trên thân vỏ và khung gầm cổ điển.
+- **Thách thức:** Các tiêu chuẩn khí thải khắt khe ngày càng siết chặt khiến kỷ nguyên xe động cơ đốt trong hiệu suất cao của JDM gặp nhiều thử thách, tuy nhiên tinh thần và cộng đồng yêu xe JDM vẫn không ngừng phát triển mạnh mẽ trên toàn cầu.
+
+---
+
+## 7. Các mẫu JDM khác trong thư viện JDM Legends
+Ngoài 7 dòng huyền thoại ở mục 3, thư viện còn lưu 5 mẫu xe quan trọng sau (thông số mang tính tham khảo):
+
+- **Nissan Silvia S15 (S15 · SR20DET, 1999):**
+  - Khối **SR20DET** 2.0L tăng áp, 250 PS · 275 Nm · 0–100 km/h 5.9 giây · ~1 240 kg · dẫn động cầu sau (FR).
+  - Bản cuối cùng của dòng Silvia: nhẹ, mũi xe thoát, vi sai hạn chế trượt — nền tảng drift "quốc dân" của các giải D1 Grand Prix.
+- **Toyota Sprinter Trueno AE86 (AE86 · 4A-GE, 1983):**
+  - Khối **4A-GE** 1.6L 16 van hút khí tự nhiên, 130 PS · 149 Nm · 0–100 km/h 8.0 giây · ~970 kg · FR.
+  - Không mạnh nhưng siêu nhẹ và cân bằng; bất tử hoá qua manga/anime **Initial D** của Shuichi Shigeno.
+- **Toyota Chaser Tourer V (JZX100 · 1JZ-GTE, 1996):**
+  - Khối **1JZ-GTE** 2.5L twin-turbo, 280 PS · 378 Nm · 0–100 km/h 5.8 giây · ~1 520 kg · FR.
+  - Sedan 4 cửa dùng chung khung gầm với dòng Supra — lựa chọn tiêu chuẩn của dân chạy tốc độ **Wangan** ban đêm.
+- **Nissan Fairlady Z / Datsun 240Z (S30 · L24, 1969):**
+  - Khối **L24** 2.4L thẳng hàng 6 máy, 151 PS · 199 Nm · 0–100 km/h 8.9 giây · ~1 050 kg · FR.
+  - Thiết kế mũi dài – đuôi ngắn kinh điển; gắn với truyền thuyết **"Devil Z"** trong Wangan Midnight.
+- **Nissan 350Z (Z33 · VQ35DE, 2002):**
+  - Khối **VQ35DE** V6 3.5L hút khí tự nhiên, 287 PS · 371 Nm · 0–100 km/h 5.4 giây · ~1 450 kg · FR.
+  - Đánh dấu sự trở lại của dòng Z sau gần 6 năm vắng bóng; nền tảng FM dùng chung với Infiniti G35.
+
+### 7.1 Bổ sung vào danh sách động cơ (mục 4)
+- **Nissan SR20DET:** I4 2.0L tăng áp, nhẹ và bền — xương sống của dòng drift Silvia.
+- **Toyota 4A-GE:** I4 1.6L 16 van hút khí tự nhiên, vòng tua cao — huyền thoại touge.
+- **Toyota 1JZ-GTE:** I6 2.5L twin-turbo, âm thanh đặc trưng — "nữ hoàng" đường Wangan.
+- **Nissan L-series (L24):** I6 2.4L thẳng hàng — khối máy mở màn kỷ nguyên dòng Z.
+- **Nissan VQ35DE:** V6 3.5L hút khí tự nhiên — đại diện JDM thời hiện đại.

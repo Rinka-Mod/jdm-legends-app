@@ -1,0 +1,34 @@
+/* ==========================================================================
+   JDM LEGENDS — LỚP GIAO DIỆN MOBILE (bản làm mới)
+   Tác giả gốc / Original author: Rinka-Mod — © 2026. All rights reserved.
+
+   Cả nhóm file trong ./mobile/ CHỈ chạy ở màn hình ≤ 860px và được nạp SAU
+   ./index.css (xem main.tsx), nên mọi khai báo ở đó đè lên bản gốc mà không
+   phải tăng độ ưu tiên selector. Bố cục PC (≥ 1024px) hoàn toàn không bị ảnh
+   hưởng.
+
+   Mục tiêu của lớp này:
+     1. Giảm số tầng giao diện xuất hiện cùng lúc (thanh công cụ, gợi ý,
+        nút nổi) → nhìn thoáng, không rối.
+     2. Hiện đại hoá bề mặt: thẻ kính bo tròn lớn, viền mảnh, bóng mềm,
+        chữ nhỏ gọn có phân cấp rõ.
+     3. Thân thiện ngón tay: vùng chạm ≥ 42px, tab bar nổi cách đáy màn hình,
+        tôn trọng vùng an toàn (tai thỏ / thanh cử chỉ).
+
+   File này chỉ còn là danh sách nạp — THỨ TỰ CÁC @import LÀ QUY TẮC CASCADE
+   (phần sau đè phần trước), đừng sắp xếp lại theo bảng chữ cái.
+   ========================================================================== */
+
+@import "./mobile/base.css";            /* 00 biến & nền chung */
+@import "./mobile/header.css";          /* 01 app bar + menu toàn màn hình */
+@import "./mobile/hero.css";            /* 02 hero + dải chữ chạy */
+@import "./mobile/sections.css";        /* 03 nhịp section chung */
+@import "./mobile/library-tools.css";   /* 04 thanh công cụ thư viện */
+@import "./mobile/cards.css";           /* 05 thẻ xe + carousel */
+@import "./mobile/sheet.css";           /* 06 bottom sheet bộ lọc */
+@import "./mobile/car-modal.css";       /* 07 hồ sơ xe */
+@import "./mobile/tabbar.css";          /* 08 tab bar dưới */
+@import "./mobile/chrome.css";          /* 09 nút nổi, chat, toast */
+@import "./mobile/sections-content.css"; /* 10 lịch sử, văn hoá, garage */
+@import "./mobile/pages.css";           /* 11 trang phụ + footer */
+@import "./mobile/narrow.css";          /* 12 máy nhỏ ≤ 380px */

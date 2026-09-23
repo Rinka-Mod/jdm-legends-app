@@ -1,0 +1,91 @@
+/* ==========================================================================
+   MOBILE 01 — HEADER (app bar gọn) & MENU TOÀN MÀN HÌNH
+   Tách từ mobile.css (giữ nguyên thứ tự nạp).
+   Tác giả gốc / Original author: Rinka-Mod — © 2026. All rights reserved.
+   ========================================================================== */
+
+@media (max-width: 860px) {
+  .site-header {
+    padding: calc(0.55rem + env(safe-area-inset-top, 0px)) 0 0.55rem;
+  }
+  .site-header.is-stuck {
+    padding: calc(0.45rem + env(safe-area-inset-top, 0px)) 0 0.45rem;
+    background: rgba(5, 6, 10, 0.88);
+    backdrop-filter: blur(18px) saturate(160%);
+  }
+
+  .brand {
+    gap: 0.55rem;
+  }
+  .brand__mark {
+    width: 34px;
+    height: 34px;
+  }
+  .brand__text b {
+    font-size: 1.15rem;
+    letter-spacing: 0.1em;
+  }
+  .brand__text i {
+    font-size: 0.5rem;
+    letter-spacing: 0.32em;
+  }
+
+  /* Nút menu: ô vuông bo mềm thay cho hình tròn viền mảnh */
+  .burger {
+    width: 40px;
+    height: 40px;
+    border-radius: 14px;
+    border-color: var(--line);
+    background: rgba(255, 255, 255, 0.045);
+  }
+  .burger i {
+    width: 16px;
+    height: 1.5px;
+  }
+
+  /* --- Menu toàn màn hình: sửa hai lỗi của bản cũ ---------------------
+     1) `.site-header.is-stuck` có backdrop-filter, mà thuộc tính này biến
+        phần tử thành KHỐI CHỨA cho mọi `position: fixed` bên trong. Menu
+        `.nav` là con của header nên khi trang đã cuộn, `inset: 0` tính theo
+        hộp header chứ không phải khung nhìn → menu bẹp còn đúng một vệt
+        cao bằng thanh header. Bỏ backdrop-filter lúc menu mở: menu đen che
+        kín màn hình nên không mất gì về mặt thị giác.
+     2) Thanh tab bar (z-index 880) và bong bóng chat (905) là anh em của
+        header (850) nên nổi lơ lửng giữa menu đang mở → nâng header lên
+        trên chúng khi menu mở. */
+  .site-header:has(.nav.is-open) {
+    z-index: 1000;
+    -webkit-backdrop-filter: none;
+    backdrop-filter: none;
+    /* Tắt transition: nếu để chạy, `backdrop-filter` còn đang chuyển tiếp về
+       `none` trong ~0.4s thì khối chứa vẫn là header, menu vẫn bị bẹp trong
+       khoảng thời gian đó rồi mới bung ra. */
+    transition: none;
+  }
+
+  /* Menu toàn màn hình: bớt cỡ chữ để không phải cuộn */
+  .nav {
+    gap: 0.15rem;
+    background: rgba(5, 6, 10, 0.97);
+  }
+
+  /* Chốt chặn cho trình duyệt chưa hỗ trợ `:has()` (lúc đó không bỏ được
+     backdrop-filter của header): khoá kích thước menu theo khung nhìn bằng
+     đơn vị viewport. Đặt sau `inset: 0` nên bề rộng/chiều cao ở đây thắng.
+     Chỉ chạy khi thiếu `:has()` nên không gây lệch vài px do thanh cuộn. */
+  @supports not selector(:has(*)) {
+    .nav {
+      width: 100vw;
+      height: 100vh;
+      height: 100dvh;
+    }
+  }
+  .nav__link {
+    font-size: 1.7rem;
+    letter-spacing: 0.1em;
+    padding-block: 0.7rem;
+  }
+  .nav__link.is-active {
+    color: var(--red-2);
+  }
+}

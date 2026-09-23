@@ -1,0 +1,12 @@
+/* ==========================================================================
+   Bố cục chung cho các route phụ (đăng nhập, garage, xe riêng…)
+   Tách từ index.css — giữ nguyên thứ tự nạp.
+   Tác giả / Author : Rinka-Mod — © 2026. All rights reserved.
+   ========================================================================== */
+
+.page {
+  padding: clamp(7rem, 12vh, 10rem) 0 6rem;
+}
+.page .section__desc {
+  max-width: 62ch;
+}

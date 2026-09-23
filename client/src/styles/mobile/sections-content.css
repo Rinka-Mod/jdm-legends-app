@@ -1,0 +1,127 @@
+/* ==========================================================================
+   MOBILE 10 — CÁC SECTION NỘI DUNG
+   Lịch sử (dòng thời gian trượt ngang) · Văn hoá · Garage (section 04)
+   Tách từ mobile.css (giữ nguyên thứ tự nạp).
+   Tác giả gốc / Original author: Rinka-Mod — © 2026. All rights reserved.
+   ========================================================================== */
+
+@media (max-width: 860px) {
+  /* Lịch sử — dòng thời gian trượt ngang */
+  .heritage__sticky {
+    padding: 4rem 0 3.25rem;
+    gap: 1.6rem;
+  }
+  .heritage__track {
+    gap: 1rem;
+    padding-left: 1.1rem;
+    padding-right: 1.4rem;
+    scroll-padding-inline: 1.1rem;
+    padding-bottom: 1rem;
+  }
+  .era {
+    width: 84vw;
+    max-width: 340px;
+    padding: 1.4rem 1.3rem;
+    border-radius: 20px;
+  }
+  .era__year {
+    font-size: 2.4rem;
+  }
+  .era__k {
+    font-size: 1.25rem;
+    margin: 0.45rem 0 0.15rem;
+  }
+  .era__title {
+    font-size: 1.25rem;
+    margin-bottom: 0.55rem;
+  }
+  .era__desc {
+    font-size: 0.85rem;
+  }
+  .era__cars {
+    gap: 0.35rem;
+    margin-top: 0.9rem;
+  }
+  .era__cars b {
+    font-size: 0.56rem;
+    padding: 0.26rem 0.55rem;
+  }
+  .heritage__hint {
+    margin-top: 0.6rem;
+    font-size: 0.66rem;
+    letter-spacing: 0.14em;
+  }
+
+  /* Văn hoá — thẻ gọn, bỏ chiều cao tối thiểu cứng */
+  .culture__grid {
+    grid-template-columns: 1fr;
+    gap: 0.85rem;
+  }
+  .culture-card {
+    min-height: 0;
+    padding: 1.5rem 1.3rem 1.4rem;
+    border-radius: 20px;
+  }
+  .culture-card__kanji {
+    font-size: 5.5rem;
+    top: -0.9rem;
+    right: -0.3rem;
+  }
+  .culture-card__idx {
+    top: 1.1rem;
+    left: 1.3rem;
+    font-size: 0.58rem;
+  }
+  .culture-card h3 {
+    font-size: 1.4rem;
+  }
+  .culture-card__jp {
+    font-size: 0.78rem;
+    letter-spacing: 0.22em;
+    margin-bottom: 0.5rem;
+  }
+  .culture-card p {
+    font-size: 0.86rem;
+  }
+
+  /* Garage (section 04) + biểu mẫu đăng ký */
+  .garage__card {
+    padding: 1.2rem;
+    border-radius: 20px;
+  }
+  .dyno svg {
+    height: 130px;
+  }
+  .garage__specs {
+    gap: 0.7rem;
+    margin-top: 1rem;
+    padding-top: 1rem;
+  }
+  .garage__specs span {
+    font-size: 0.55rem;
+    letter-spacing: 0.14em;
+  }
+  .garage__specs b {
+    font-size: 0.95rem;
+  }
+  .subscribe {
+    gap: 0.5rem;
+    margin-top: 1.4rem;
+  }
+  .subscribe input {
+    flex: 1 1 100%;
+    padding: 0.85rem 1.1rem;
+    font-size: 0.9rem;
+  }
+  .subscribe .btn {
+    width: 100%;
+    min-height: 48px;
+    justify-content: center;
+  }
+  .garage__saved-list a {
+    padding: 0.65rem 0.8rem;
+  }
+  .garage__saved-list b {
+    font-size: 0.86rem;
+  }
+}

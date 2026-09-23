@@ -1,0 +1,188 @@
+/* ==========================================================================
+   MOBILE 11 — TRANG PHỤ & FOOTER
+     11a. chi tiết xe · 11b. tài khoản (đăng nhập / đăng ký) · 11c. garage riêng
+     12. footer
+   Tách từ mobile.css (giữ nguyên thứ tự nạp).
+   Tác giả gốc / Original author: Rinka-Mod — © 2026. All rights reserved.
+   ========================================================================== */
+
+@media (max-width: 860px) {
+  .page {
+    padding: calc(5.5rem + env(safe-area-inset-top, 0px)) 0 3.5rem;
+  }
+
+  /* --- 11a. TRANG CHI TIẾT XE ------------------------------------------ */
+  /* Đường dẫn thu thành thanh nhỏ dính dưới app bar: lúc nào cũng có đường
+     quay lại mà không phải cuộn ngược lên đầu trang. */
+  .car-page__crumb {
+    position: sticky;
+    top: calc(3.7rem + env(safe-area-inset-top, 0px));
+    z-index: 55;
+    flex-wrap: nowrap;
+    gap: 0.4rem;
+    margin-bottom: 1.1rem;
+    padding: 0.45rem 0.7rem;
+    border: 1px solid var(--line);
+    border-radius: 14px;
+    background: rgba(9, 11, 17, 0.88);
+    -webkit-backdrop-filter: blur(18px) saturate(150%);
+    backdrop-filter: blur(18px) saturate(150%);
+    font-size: 0.6rem;
+    letter-spacing: 0.1em;
+  }
+  /* Bỏ mắt "Trang chủ" (tab bar đã lo việc đó): còn "← Thư viện / tên xe" */
+  .car-page__crumb > a:first-child,
+  .car-page__crumb > span:first-of-type {
+    display: none;
+  }
+  .car-page__crumb a {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.3rem;
+    white-space: nowrap;
+  }
+  .car-page__crumb a::before {
+    content: "←";
+    color: var(--red-2);
+    font-size: 0.75rem;
+    line-height: 1;
+  }
+  .car-page__crumb b {
+    max-width: 46%;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+  }
+
+  .car-page__grid {
+    gap: 1.3rem;
+  }
+  .car-page__art {
+    border-radius: 18px;
+    box-shadow: 0 30px 60px -42px rgba(0, 0, 0, 0.95);
+  }
+  .car-page__art .art {
+    height: 200px;
+  }
+
+  /* Thông số: lưới hai cột dạng ô kính, quét mắt nhanh hơn danh sách dọc */
+  .car-page__specs {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 0.5rem;
+    margin: 0.3rem 0 1.2rem;
+  }
+  .car-page__specs li {
+    gap: 0.2rem;
+    padding: 0.7rem 0.75rem;
+    border-radius: 14px;
+    background: rgba(255, 255, 255, 0.035);
+  }
+  .car-page__specs span {
+    font-size: 0.55rem;
+    letter-spacing: 0.12em;
+  }
+  .car-page__specs b {
+    font-size: 1rem;
+  }
+
+  /* --- 11b. TRANG TÀI KHOẢN (đăng nhập / đăng ký) --------------------- */
+  /* Bỏ khoảng canh giữa 60vh của bản PC: trên điện thoại biểu mẫu nên bắt
+     đầu ngay dưới app bar thay vì chừa một khoảng trống lớn phía trên. */
+  .auth {
+    min-height: 0;
+  }
+  .auth__card {
+    gap: 0.85rem;
+    padding: 1.35rem 1.15rem;
+    border-radius: 20px;
+    border-color: var(--line);
+    background: linear-gradient(180deg, rgba(22, 25, 35, 0.7), rgba(9, 11, 17, 0.88));
+    box-shadow: 0 30px 60px -42px rgba(0, 0, 0, 0.95);
+  }
+  .auth__sub {
+    font-size: 0.88rem;
+    line-height: 1.65;
+  }
+  .auth__field {
+    gap: 0.4rem;
+  }
+  .auth__field span {
+    font-size: 0.56rem;
+    letter-spacing: 0.16em;
+  }
+  .auth__field input {
+    min-height: 48px;
+    padding: 0.8rem 0.9rem;
+    border-radius: 14px;
+    background: rgba(255, 255, 255, 0.04);
+    /* 16px để Safari iOS không tự phóng to trang khi focus */
+    font-size: 1rem;
+  }
+  /* Lỗi thành khối cảnh báo — dễ nhận ra hơn một dòng chữ đỏ trần */
+  .auth__error {
+    padding: 0.6rem 0.75rem;
+    border: 1px solid rgba(224, 31, 45, 0.4);
+    border-radius: 12px;
+    background: rgba(224, 31, 45, 0.12);
+    font-size: 0.8rem;
+    line-height: 1.5;
+  }
+  .auth__submit {
+    width: 100%;
+    min-height: 50px;
+    justify-content: center;
+    margin-top: 0.2rem;
+  }
+  .auth__alt {
+    font-size: 0.82rem;
+    line-height: 1.6;
+  }
+
+  /* --- 11c. GARAGE RIÊNG ---------------------------------------------- */
+  .garage-page__actions {
+    gap: 0.55rem;
+    margin-top: 1.1rem;
+  }
+  .garage-page__actions .btn {
+    flex: 1;
+    min-height: 48px;
+    justify-content: center;
+  }
+
+  /* ======================================================================
+     12. FOOTER
+     ====================================================================== */
+  .site-footer {
+    padding: 3rem 0 1.75rem;
+  }
+  .footer__top {
+    gap: 1.75rem;
+  }
+  .footer__col a {
+    font-size: 0.86rem;
+  }
+  .footer__bottom {
+    gap: 0.5rem;
+    font-size: 0.72rem;
+  }
+  .credit {
+    gap: 1.2rem;
+    padding: 1.3rem 1.15rem;
+    border-radius: 20px;
+  }
+  .credit__avatar {
+    width: 52px;
+    height: 52px;
+    font-size: 1.25rem;
+  }
+  .credit__name {
+    font-size: 1.5rem;
+  }
+  .credit__text {
+    font-size: 0.84rem;
+  }
+  .footer__social a {
+    width: 36px;
+    height: 36px;
+  }
+}

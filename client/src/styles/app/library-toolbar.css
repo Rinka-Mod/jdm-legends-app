@@ -1,0 +1,436 @@
+/* ==========================================================================
+   THƯ VIỆN — THANH TÌM KIẾM & LỌC (bản hiện đại)
+
+   Một thẻ kính bo 22px, bên trong là ba hàng có phân cấp rõ:
+     hàng 1 — dải điều khiển: ô tìm kiếm · chọn sắp xếp · nút bộ lọc.
+               Cả ba cao đúng 48px, cùng bo 14px → nhìn như một khối điều
+               khiển liền mạch thay vì ba viên thuốc cao thấp khác nhau.
+     hàng 2 — dãy chip thương hiệu dạng khối bo 12px, mỗi chip kèm số xe
+               của hãng. Trong chip, tên hãng và tên tiếng Nhật xếp HAI DÒNG
+               (xem `.chip__txt`): vừa giữ được tên tiếng Nhật ở mọi chip,
+               vừa giữ hàng chip gọn đúng bằng hiện tại, vừa bấm không xê
+               dịch vì chữ không đổi giữa các trạng thái.
+     hàng 3 — (khi có lọc) thẻ điều kiện đang lọc, bấm để bỏ.
+   Chỉ dùng biến màu có sẵn của theme nên không lệch tông với phần còn lại.
+
+   Tách từ index.css — giữ nguyên thứ tự nạp.
+   Tác giả / Author : Rinka-Mod — © 2026. All rights reserved.
+   ========================================================================== */
+
+.toolbar {
+  display: grid;
+  /* Bản gốc trong style.css khai báo .toolbar là flex kèm
+     `justify-content: space-between; align-items: center`. Hai giá trị đó vẫn
+     còn hiệu lực sau khi đổi sang grid và phá bố cục: `space-between` chặn
+     bước giãn cột tự động của grid, nên cột duy nhất co về đúng max-content
+     của hàng rộng nhất rồi dồn hết khoảng dư sang bên phải — hàng tìm kiếm và
+     dãy chip thương hiệu bị hụt khỏi mép phải của thẻ. Trả về mặc định
+     (normal = stretch) để cột phủ hết bề ngang. */
+  justify-content: normal;
+  align-items: normal;
+  gap: 0.8rem;
+  margin-bottom: 2.2rem;
+  padding: 0.8rem;
+  border: 1px solid var(--line);
+  border-radius: 22px;
+  background: linear-gradient(180deg, rgba(20, 23, 33, 0.92), rgba(8, 9, 14, 0.96));
+  box-shadow:
+    0 30px 70px -42px rgba(0, 0, 0, 0.95),
+    inset 0 1px 0 rgba(255, 255, 255, 0.05);
+  -webkit-backdrop-filter: blur(20px) saturate(160%);
+  backdrop-filter: blur(20px) saturate(160%);
+}
+
+/* ---------- Hàng trên ---------- */
+.ltop {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto auto;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+/* ---------- Ô tìm kiếm ---------- */
+.toolbar .search {
+  display: flex;
+  align-items: center;
+  gap: 0.7rem;
+  min-width: 0;
+  height: 48px;
+  padding: 0 0.95rem;
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  background: rgba(255, 255, 255, 0.045);
+  transition: border-color 0.25s, background 0.25s, box-shadow 0.25s;
+}
+.toolbar .search:hover {
+  border-color: var(--line-2);
+}
+.toolbar .search:focus-within {
+  border-color: rgba(224, 31, 45, 0.7);
+  background: rgba(255, 255, 255, 0.06);
+  box-shadow: 0 0 0 4px rgba(224, 31, 45, 0.13);
+}
+.toolbar .search > svg {
+  width: 18px;
+  height: 18px;
+  flex: none;
+  fill: none;
+  stroke: var(--muted);
+  stroke-width: 2;
+  stroke-linecap: round;
+  transition: stroke 0.3s;
+}
+.toolbar .search:focus-within > svg {
+  stroke: var(--red-2);
+}
+.toolbar .search input {
+  flex: 1 1 auto;
+  min-width: 0;
+  border: 0;
+  background: none;
+  outline: none;
+  font-size: 0.92rem;
+  letter-spacing: 0.01em;
+}
+.toolbar .search input::placeholder {
+  color: #6c7280;
+}
+/* Bỏ nút xoá mặc định của trình duyệt để dùng nút tròn tự vẽ */
+.toolbar .search input::-webkit-search-cancel-button {
+  -webkit-appearance: none;
+  appearance: none;
+}
+
+.search__kbd {
+  flex: none;
+  padding: 0.12rem 0.42rem;
+  border: 1px solid var(--line-2);
+  border-radius: 6px;
+  font-family: inherit;
+  font-size: 0.62rem;
+  line-height: 1.6;
+  color: var(--muted);
+}
+.search__clear {
+  display: grid;
+  place-items: center;
+  flex: none;
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.09);
+  transition: background 0.25s, transform 0.25s var(--ease);
+}
+.search__clear:hover {
+  background: var(--red);
+  transform: rotate(90deg);
+}
+.toolbar .search .search__clear svg {
+  width: 11px;
+  height: 11px;
+  stroke: var(--white);
+  stroke-width: 2.4;
+}
+
+/* ---------- Chọn sắp xếp ---------- */
+.sortselect {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.55rem;
+  height: 48px;
+  padding: 0 0.85rem;
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  background: rgba(255, 255, 255, 0.045);
+  transition: border-color 0.25s, background 0.25s;
+}
+.sortselect:hover {
+  border-color: var(--line-2);
+  background: rgba(255, 255, 255, 0.07);
+}
+.sortselect__icon {
+  width: 16px;
+  height: 16px;
+  flex: none;
+  fill: none;
+  stroke: var(--muted);
+  stroke-width: 2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  transition: stroke 0.25s;
+}
+.sortselect:hover .sortselect__icon {
+  stroke: var(--red-2);
+}
+.sortselect:hover .sortselect__chev {
+  stroke: var(--red-2);
+}
+.sortselect__label {
+  font-size: 0.58rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+.sortselect select {
+  -webkit-appearance: none;
+  appearance: none;
+  border: 0;
+  background: none;
+  outline: none;
+  padding-right: 1.05rem;
+  color: var(--white);
+  font-family: inherit;
+  font-size: 0.8rem;
+  cursor: pointer;
+}
+.sortselect select option {
+  background: #0b0d13;
+  color: #fff;
+}
+.sortselect__chev {
+  position: absolute;
+  right: 0.62rem;
+  top: 50%;
+  width: 13px;
+  height: 13px;
+  transform: translateY(-50%);
+  pointer-events: none;
+  fill: none;
+  stroke: var(--muted);
+  stroke-width: 2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+/* ---------- Nút mở bảng bộ lọc nâng cao ---------- */
+.chip--adv {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.55rem;
+  height: 48px;
+  padding: 0 1.05rem;
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  background: rgba(255, 255, 255, 0.045);
+  color: var(--white);
+  font-size: 0.72rem;
+  font-weight: 500;
+  letter-spacing: 0.11em;
+  text-transform: uppercase;
+  white-space: nowrap;
+  transition: color 0.25s, border-color 0.25s, background 0.25s, box-shadow 0.3s;
+}
+.chip--adv svg {
+  width: 15px;
+  height: 15px;
+  flex: none;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+.chip--adv:hover {
+  border-color: var(--line-2);
+  background: rgba(255, 255, 255, 0.07);
+}
+/* Có điều kiện nâng cao đang bật */
+.chip--adv.is-on {
+  color: var(--red-2);
+  border-color: rgba(224, 31, 45, 0.5);
+  background: rgba(224, 31, 45, 0.1);
+}
+/* Đang mở bảng */
+.chip--adv.is-open {
+  color: #fff;
+  border-color: transparent;
+  background: linear-gradient(120deg, var(--red), #a5121f);
+  box-shadow: 0 10px 26px -14px rgba(224, 31, 45, 0.95);
+}
+.chip__badge {
+  display: grid;
+  place-items: center;
+  min-width: 18px;
+  height: 18px;
+  padding: 0 0.3rem;
+  /* Cùng họ bo góc với huy hiệu số xe của chip thương hiệu (.chip__n) */
+  border-radius: 7px;
+  background: var(--red);
+  color: #fff;
+  font-size: 0.6rem;
+  font-style: normal;
+  font-weight: 600;
+  letter-spacing: 0;
+}
+.chip--adv.is-open .chip__badge {
+  background: rgba(0, 0, 0, 0.3);
+}
+
+/* ---------- Dãy chip thương hiệu ----------
+   Chia làm HAI lớp có chủ đích, vì chỉ một lớp thì không thể vừa căn giữa
+   vừa cuộn ngang: trình duyệt luôn coi phần tử căn giữa trong vùng cuộn là
+   "tràn" và lùi về sát trái (kể cả khi dùng từ khoá `safe`).
+     • `.filters`        — khung ngoài, về sau (PC) đóng vai vùng cuộn ngang
+     • `.filters__inner`  — flex container thật sự, lo việc căn giữa
+   Cách này chạy đúng ở mọi trình duyệt, không phụ thuộc từ khoá `safe`. */
+.filters {
+  display: block;
+  min-width: 0;
+  padding: 3px 2px 4px;
+}
+.filters__inner {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 0.4rem;
+}
+.filters .chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  flex: none;
+  height: 44px;
+  padding: 0 0.7rem 0 0.85rem;
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  background: rgba(255, 255, 255, 0.035);
+  color: var(--muted);
+  font-size: 0.7rem;
+  font-weight: 500;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  white-space: nowrap;
+  transition: color 0.25s, border-color 0.25s, background 0.25s,
+    transform 0.25s var(--ease), box-shadow 0.3s;
+}
+.filters .chip:hover {
+  color: var(--white);
+  border-color: var(--line-2);
+  background: rgba(255, 255, 255, 0.075);
+  transform: translateY(-1px);
+}
+.filters .chip.is-active {
+  color: #fff;
+  border-color: transparent;
+  background: linear-gradient(120deg, var(--red), #a5121f);
+  box-shadow:
+    0 10px 24px -14px rgba(224, 31, 45, 0.95),
+    inset 0 1px 0 rgba(255, 255, 255, 0.22);
+}
+/* Tên hãng và tên Nhật xếp thành hai dòng trong cùng một chip:
+     TOYOTA
+     トヨタ
+   Vì xếp dọc nên bề rộng chip do dòng DÀI NHẤT quyết định — mà tên tiếng
+   Nhật luôn ngắn hơn tên hãng — nên chip rộng đúng như khi chỉ có tên hãng:
+   hàng chip không phình ra, vẫn vừa trên laptop 1280px. Và vì chữ trong chip
+   không đổi khi bật/tắt trạng thái chọn, bấm hãng cũng KHÔNG làm hàng chip
+   xê dịch (đã đo: độ dịch 0px). */
+.filters .chip__txt {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 0.02rem;
+  line-height: 1.12;
+  text-align: left;
+}
+.filters .chip__txt em {
+  font-style: normal;
+  font-family: var(--font-jp);
+  font-size: 0.6rem;
+  /* Bỏ margin-left của rule `.chip em` bên style.css (bản gốc đặt cho kiểu
+     nằm cùng dòng) và hạ độ tương phản để tên Nhật là lớp phụ. */
+  margin-left: 0;
+  letter-spacing: 0;
+  opacity: 0.5;
+  transition: opacity 0.25s;
+}
+.filters .chip:hover .chip__txt em {
+  opacity: 0.75;
+}
+.filters .chip.is-active .chip__txt em {
+  opacity: 0.85;
+}
+
+/* Số xe của từng hãng: huy hiệu nhỏ, dịu mắt, không tranh chấp với tên hãng. */
+.filters .chip .chip__n {
+  display: inline-grid;
+  place-items: center;
+  min-width: 20px;
+  padding: 0.1rem 0.34rem;
+  border-radius: 7px;
+  background: rgba(255, 255, 255, 0.06);
+  font-size: 0.6rem;
+  font-weight: 600;
+  letter-spacing: 0;
+  color: #8b91a0;
+  transition: background 0.25s, color 0.25s;
+}
+.filters .chip:hover .chip__n {
+  background: rgba(255, 255, 255, 0.11);
+  color: var(--white);
+}
+.filters .chip.is-active .chip__n {
+  background: rgba(0, 0, 0, 0.3);
+  color: #fff;
+}
+
+/* ---------- Thẻ điều kiện đang lọc ---------- */
+.ltags {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0 0.15rem;
+}
+.ltags__label {
+  margin-right: 0.1rem;
+  font-size: 0.58rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+.ltag {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.42rem;
+  height: 34px;
+  padding: 0 0.6rem 0 0.75rem;
+  border: 1px solid rgba(224, 31, 45, 0.35);
+  border-radius: 10px;
+  background: rgba(224, 31, 45, 0.1);
+  color: var(--white);
+  font-size: 0.68rem;
+  font-weight: 500;
+  letter-spacing: 0.04em;
+  transition: background 0.25s, border-color 0.25s;
+}
+.ltag:hover {
+  background: rgba(224, 31, 45, 0.2);
+  border-color: rgba(224, 31, 45, 0.65);
+}
+.ltag svg {
+  width: 10px;
+  height: 10px;
+  flex: none;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 2.6;
+  stroke-linecap: round;
+  opacity: 0.65;
+  transition: opacity 0.25s;
+}
+.ltag:hover svg {
+  opacity: 1;
+}
+.ltags__clear {
+  margin-left: auto;
+  font-size: 0.62rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--muted);
+  transition: color 0.25s;
+}
+.ltags__clear:hover {
+  color: var(--red-2);
+}

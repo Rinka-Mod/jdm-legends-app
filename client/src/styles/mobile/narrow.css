@@ -1,0 +1,39 @@
+/* ==========================================================================
+   MOBILE 12 — MÁY NHỎ (≤ 380px)
+   Siết thêm cỡ chữ để 6 mục tab bar và 3 cột số liệu vẫn nằm gọn trên một hàng.
+   Tách từ mobile.css (giữ nguyên thứ tự nạp).
+   Tác giả gốc / Original author: Rinka-Mod — © 2026. All rights reserved.
+   ========================================================================== */
+
+@media (max-width: 380px) {
+  .wrap {
+    width: min(100% - 1.7rem, var(--wrap));
+  }
+  .mobile-bar__item {
+    font-size: 0.46rem;
+    letter-spacing: 0;
+  }
+  .mobile-bar__item svg {
+    width: 20px;
+    height: 20px;
+  }
+  .mobile-bar__badge {
+    right: 12%;
+  }
+  .viewbar {
+    width: 84px;
+  }
+  .hero__stats dt {
+    font-size: 1.25rem;
+  }
+  .hero__stats dd {
+    font-size: 0.5rem;
+    letter-spacing: 0.06em;
+  }
+  .section__title {
+    font-size: clamp(1.75rem, 8.5vw, 2.2rem);
+  }
+  .sheet .advpanel__grid {
+    grid-template-columns: 1fr;
+  }
+}

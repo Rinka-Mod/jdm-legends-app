@@ -1,0 +1,61 @@
+/* ==========================================================================
+   PC (≥1024px) — THANH CÔNG CỤ THƯ VIỆN
+   Thanh dính dưới topbar như bản gốc. Dãy chip giữ đúng một hàng và tự cuộn
+   ngang khi hẹp — nhờ vậy thẻ kính không bị cao lên theo.
+
+   Tách từ index.css — giữ nguyên thứ tự nạp.
+   Tác giả / Author : Rinka-Mod — © 2026. All rights reserved.
+   ========================================================================== */
+
+@media (min-width: 1024px) {
+  .toolbar {
+    position: sticky;
+    top: 78px;
+    z-index: 55;
+  }
+
+  /* Khung ngoài thành vùng cuộn ngang; đệm dưới để bóng đỏ của chip đang
+     chọn không bị cắt cụt, margin âm giữ nguyên khoảng cách với hàng dưới. */
+  .filters {
+    overflow-x: auto;
+    overflow-y: hidden;
+    padding: 4px 2px 16px;
+    margin-bottom: -12px;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+    /* Hai mép mờ dần: khi dãy chip phải cuộn ngang thì thấy ngay là còn nội
+       dung; khi chip vừa chỗ (đang căn giữa) thì khoảng trống hai bên lớn
+       hơn 16px nên lớp mờ này gần như vô hình. */
+    -webkit-mask-image: linear-gradient(90deg, transparent 0, #000 16px, #000 calc(100% - 16px), transparent 100%);
+    mask-image: linear-gradient(90deg, transparent 0, #000 16px, #000 calc(100% - 16px), transparent 100%);
+  }
+  .filters::-webkit-scrollbar {
+    display: none;
+  }
+
+  /* Một hàng duy nhất, căn giữa khi vừa chỗ:
+       width: max-content  → khi chip tràn chỗ, khung trong rộng bằng đúng
+                             nội dung nên không còn khoảng trống để căn giữa,
+                             chip bắt đầu từ trái và cuộn tới lui được hết;
+       min-width: 100%     → khi chip còn vừa, khung trong giãn đầy bề ngang
+                             để `justify-content: center` có chỗ mà căn giữa. */
+  .filters__inner {
+    flex-wrap: nowrap;
+    width: max-content;
+    min-width: 100%;
+    margin-inline: auto;
+    gap: 0.5rem;
+  }
+
+  /* Bảng bộ lọc nâng cao bung ra ngay dưới thẻ, bám theo thanh đang dính */
+  .advpanel {
+    position: absolute;
+    top: calc(100% + 0.7rem);
+    left: 0;
+    right: 0;
+    /* `left` + `right` đã quyết định bề ngang, bỏ width để tránh xung đột */
+    width: auto;
+    z-index: 60;
+    margin-top: 0;
+  }
+}

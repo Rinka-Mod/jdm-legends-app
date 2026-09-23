@@ -1,0 +1,36 @@
+# ==========================================================================
+# JDM LEGENDS — Cấu hình deploy lên Netlify
+#
+# QUAN TRỌNG: Netlify chỉ chạy được PHẦN TĨNH (front-end React đã build).
+# Nó KHÔNG chạy được Express và KHÔNG giữ được file SQLite, nên API phải nằm
+# ở một máy chủ khác (xem mục "VITE_API_BASE" bên dưới).
+#
+# `base = "client"`: Netlify sẽ cài dependency và chạy build BÊN TRONG thư mục
+# client. Trước đây để build ở thư mục gốc sẽ hỏng, vì `npm install` ở gốc chỉ
+# cài `concurrently`, còn `typescript` (lệnh `tsc`) nằm trong client/ và
+# server/ — nên dòng `tsc -p tsconfig.json` báo "tsc: not found".
+#
+# Tác giả / Author : Rinka-Mod — © 2026. All rights reserved.
+# ==========================================================================
+
+[build]
+  base = "client"
+  # `npm ci` ở đây là thừa nếu Netlify đã tự cài, nhưng ghi rõ ra thì chắc chắn
+  # đúng: `tsc` nằm trong client/node_modules, không phải ở thư mục gốc.
+  command = "npm ci && npm run build"
+  publish = "dist"
+
+[build.environment]
+  # Trỏ front-end tới API đã deploy ở nơi khác (nhớ có /api ở cuối).
+  # Bỏ dấu # ở dòng dưới và thay bằng địa chỉ thật của bạn rồi deploy lại;
+  # đổi biến môi trường thì phải BUILD LẠI, Netlify không tự áp dụng cho bản cũ.
+  # Nếu bỏ trống, front-end gọi "/api" trên chính tên miền Netlify → sẽ lỗi
+  # "Không kết nối được máy chủ" vì Netlify không có API.
+  # VITE_API_BASE = "https://ten-mien-api-cua-ban/api"
+
+# React Router dùng đường dẫn thật (/car/:id, /login, /garage). Không có quy
+# tắc này thì mở thẳng hoặc F5 ở các URL đó sẽ ra trang 404 của Netlify.
+[[redirects]]
+  from = "/*"
+  to = "/index.html"
+  status = 200

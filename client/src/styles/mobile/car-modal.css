@@ -1,0 +1,96 @@
+/* ==========================================================================
+   MOBILE 07 — HỒ SƠ XE (modal trượt từ đáy)
+   Tách từ mobile.css (giữ nguyên thứ tự nạp).
+   Tác giả gốc / Original author: Rinka-Mod — © 2026. All rights reserved.
+   ========================================================================== */
+
+@media (max-width: 860px) {
+  .modal__panel {
+    border-radius: 24px 24px 0 0;
+    max-height: 94svh;
+  }
+  .modal__grab {
+    width: 42px;
+    height: 4px;
+    background: rgba(255, 255, 255, 0.28);
+    margin: 0.6rem auto -0.1rem;
+  }
+  .modal__close {
+    top: 0.7rem;
+    right: 0.7rem;
+    width: 34px;
+    height: 34px;
+    border-color: var(--line);
+  }
+  .modal__art {
+    height: 172px;
+    min-height: 172px;
+  }
+  .modal__art .art {
+    min-height: 172px;
+  }
+  .modal__body {
+    padding: 1.25rem 1.15rem calc(1.5rem + env(safe-area-inset-bottom, 0px));
+  }
+  .modal__title {
+    font-size: clamp(1.6rem, 7.4vw, 2.1rem);
+  }
+  .modal__tag {
+    font-size: 0.85rem;
+  }
+  .modal__story {
+    margin-top: 0.9rem;
+    font-size: 0.9rem;
+    line-height: 1.75;
+  }
+  .modal__sub {
+    margin: 1.4rem 0 0.8rem;
+    font-size: 0.6rem;
+    letter-spacing: 0.22em;
+  }
+  .specs {
+    gap: 0.7rem;
+  }
+  .spec__label {
+    font-size: 0.68rem;
+  }
+  .highlights li {
+    font-size: 0.86rem;
+  }
+  /* Hai nút hành động xếp dọc, đủ lớn để chạm */
+  .modal__actions {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 0.55rem;
+    margin-top: 1.3rem;
+  }
+  .modal__actions .btn {
+    width: 100%;
+    min-height: 48px;
+    justify-content: center;
+  }
+  .modal__nav {
+    gap: 0.5rem;
+    margin-top: 1rem;
+    padding-top: 1rem;
+  }
+  .modal__nav-btn {
+    flex: 1;
+    min-width: 0;
+    justify-content: center;
+    padding: 0.7rem 0.6rem;
+    font-size: 0.62rem;
+    letter-spacing: 0.08em;
+  }
+  /* Tên xe ở nút chuyển tiếp có thể dài — cắt gọn thay vì đẩy vỡ hàng */
+  .modal__nav-btn span {
+    min-width: 0;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+  }
+  /* Phím tắt ← → không có trên điện thoại */
+  .modal__hint {
+    display: none;
+  }
+}

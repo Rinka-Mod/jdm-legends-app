@@ -1,0 +1,97 @@
+/* ==========================================================================
+   MOBILE 05 — THẺ XE (thông số ba cột) & CAROUSEL + CHẤM CHỈ MỤC
+   Tách từ mobile.css (giữ nguyên thứ tự nạp).
+   Tác giả gốc / Original author: Rinka-Mod — © 2026. All rights reserved.
+   ========================================================================== */
+
+@media (max-width: 860px) {
+  .art {
+    height: 176px;
+  }
+  .card {
+    border-radius: 20px;
+  }
+  .card__body {
+    padding: 1.05rem 1.15rem 1.15rem;
+  }
+  .card__top {
+    margin-bottom: 0.2rem;
+  }
+  .card__brand {
+    font-size: 0.62rem;
+    letter-spacing: 0.22em;
+  }
+  .card__year {
+    font-size: 0.95rem;
+  }
+  .card__name {
+    font-size: 1.5rem;
+  }
+  .card__code {
+    font-size: 0.78rem;
+  }
+
+  /* Thông số nhanh: ba cột, có vạch phân cách thay vì khoảng trắng rộng */
+  .card__mini {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 0;
+    margin: 0.85rem 0 1rem;
+    padding: 0.7rem 0;
+  }
+  .card__mini div {
+    padding-inline: 0.7rem;
+    border-left: 1px solid var(--line);
+  }
+  .card__mini div:first-child {
+    padding-left: 0;
+    border-left: 0;
+  }
+  .card__mini span {
+    font-size: 0.52rem;
+    letter-spacing: 0.13em;
+  }
+  .card__mini b {
+    font-size: 0.82rem;
+  }
+  .card__cta {
+    font-size: 0.66rem;
+    letter-spacing: 0.16em;
+  }
+
+  .card__fav {
+    top: 0.6rem;
+    right: 0.6rem;
+    width: 34px;
+    height: 34px;
+  }
+  .card__fav svg {
+    width: 15px;
+    height: 15px;
+  }
+
+  /* Carousel: thẻ chiếm 86% để luôn "lộ" một phần thẻ kế tiếp */
+  .grid.is-swipe {
+    grid-auto-columns: min(86%, 330px);
+    gap: 0.8rem;
+    padding: 0.25rem 1.05rem 0.9rem;
+    margin-inline: -1.05rem;
+    scroll-padding-inline: 1.05rem;
+  }
+  .grid.is-swipe .card {
+    scroll-snap-align: center;
+  }
+
+  .dots {
+    min-height: 22px;
+    margin-top: 0.5rem;
+    gap: 0.3rem;
+  }
+  .dots button {
+    width: 5px;
+    height: 5px;
+  }
+  .dots button.is-active {
+    width: 20px;
+  }
+}

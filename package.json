@@ -1,0 +1,23 @@
+{
+  "name": "jdm-legends-app",
+  "version": "1.0.0",
+  "private": true,
+  "description": "JDM LEGENDS — Web App full-stack: Node.js + TypeScript (Back-End) và React + TypeScript + Vite (Front-End)",
+  "author": "Rinka-Mod",
+  "license": "SEE LICENSE IN LICENSE.md",
+  "scripts": {
+    "install:all": "npm --prefix server install && npm --prefix client install",
+    "dev": "concurrently -n api,web -c red,cyan \"npm --prefix server run dev\" \"npm --prefix client run dev\"",
+    "dev:server": "npm --prefix server run dev",
+    "dev:client": "npm --prefix client run dev",
+    "typecheck": "npm --prefix server run typecheck && npm --prefix client run typecheck",
+    "build": "npm --prefix server run build && npm --prefix client run build",
+    "start": "npm --prefix server run start"
+  },
+  "devDependencies": {
+    "concurrently": "^9.1.0"
+  },
+  "engines": {
+    "node": ">=22.5.0"
+  }
+}

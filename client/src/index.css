@@ -1,0 +1,28 @@
+/* ==========================================================================
+   JDM LEGENDS — Điểm vào CSS
+   1) Toàn bộ bảng thiết kế gốc (2 giao diện: mobile app-like + PC sidebar)
+      được giữ nguyên trong ./styles/style.css
+      Riêng preloader nằm trong index.html (HTML tĩnh + script chạy lúc parse)
+      để hiện ngay ở khung hình đầu, đúng như bản tĩnh gốc.
+   2) Các thành phần MỚI của bản Web App (bộ lọc nâng cao, nút lưu vào Garage,
+      trang tài khoản, trang xe riêng) nằm trong ./styles/app/ và được chia
+      theo từng nhóm thành phần cho dễ đọc.
+
+   File này chỉ còn là danh sách nạp — THỨ TỰ CÁC @import LÀ QUY TẮC CASCADE,
+   đừng sắp xếp lại: style.css phải đứng đầu, và các file sau bổ sung dần cho
+   tới khi lớp mobile (./styles/mobile.css, nạp trong main.tsx) ghi đè ở cuối.
+
+   Tác giả / Author : Rinka-Mod — © 2026. All rights reserved.
+   ========================================================================== */
+
+/* Bảng thiết kế gốc */
+@import "./styles/style.css";
+
+/* Thành phần mới của bản Web App */
+@import "./styles/app/page.css";
+@import "./styles/app/library-toolbar.css";
+@import "./styles/app/library-advpanel.css";
+@import "./styles/app/library-desktop.css";
+@import "./styles/app/car.css";
+@import "./styles/app/account.css";
+@import "./styles/app/responsive.css";

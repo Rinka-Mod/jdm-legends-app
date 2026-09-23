@@ -1,0 +1,92 @@
+/* ==========================================================================
+   MOBILE 02 — HERO (một cột, nhịp chữ chặt hơn) & DẢI CHỮ CHẠY
+   Tách từ mobile.css (giữ nguyên thứ tự nạp).
+   Tác giả gốc / Original author: Rinka-Mod — © 2026. All rights reserved.
+   ========================================================================== */
+
+@media (max-width: 860px) {
+  .hero {
+    min-height: 92svh;
+    padding: calc(6.3rem + env(safe-area-inset-top, 0px)) 0 4.5rem;
+  }
+  .hero__sun {
+    width: 58vw;
+    bottom: 20%;
+    opacity: 0.7;
+  }
+
+  .hero__kicker {
+    gap: 0.5rem;
+    padding: 0.42rem 0.85rem;
+    font-size: 0.6rem;
+    letter-spacing: 0.18em;
+  }
+
+  .hero__title {
+    margin: 1rem 0 1.05rem;
+  }
+  .hero__title-jp {
+    font-size: clamp(2.8rem, 14vw, 4.2rem);
+  }
+  .hero__title-en .line {
+    font-size: clamp(2rem, 10.5vw, 3rem);
+    letter-spacing: 0.14em;
+  }
+
+  .hero__lead {
+    max-width: none;
+    font-size: 0.95rem;
+    line-height: 1.7;
+  }
+
+  .hero__cta {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 0.6rem;
+    margin-top: 1.6rem;
+  }
+  .hero__cta .btn {
+    justify-content: center;
+    width: 100%;
+    min-height: 50px;
+  }
+
+  /* Ba số liệu: chia cột bằng vạch mảnh thay vì khoảng trắng lớn */
+  .hero__stats {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 0;
+    margin-top: 2rem;
+    padding-top: 1.2rem;
+  }
+  .hero__stats > div {
+    padding-inline: 0.75rem;
+    border-left: 1px solid var(--line);
+  }
+  .hero__stats > div:first-child {
+    padding-left: 0;
+    border-left: 0;
+  }
+  .hero__stats dt {
+    font-size: 1.5rem;
+    letter-spacing: 0.02em;
+  }
+  .hero__stats dd {
+    font-size: 0.54rem;
+    line-height: 1.45;
+    letter-spacing: 0.1em;
+  }
+
+  /* Gợi ý cuộn dọc: thừa trên điện thoại vì tab bar đã dẫn hướng */
+  .hero__scroll {
+    display: none;
+  }
+
+  .marquee {
+    padding: 0.8rem 0;
+  }
+  .marquee__track span {
+    font-size: 1.15rem;
+    letter-spacing: 0.16em;
+  }
+}

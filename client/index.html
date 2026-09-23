@@ -1,0 +1,118 @@
+<!doctype html>
+<html lang="vi">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+    <title>JDM LEGENDS 伝説 — Thư viện xe thể thao Nhật Bản</title>
+    <meta
+      name="description"
+      content="Thư viện số về xe thể thao JDM: huyền thoại đường phố Nhật Bản, thông số, lịch sử và văn hoá xe độ."
+    />
+    <meta name="author" content="Rinka-Mod" />
+    <meta
+      name="copyright"
+      content="© 2026 Rinka-Mod — Vui lòng ghi rõ tên tác giả khi tái sử dụng dự án."
+    />
+
+    <!-- Open Graph — chia sẻ lên mạng xã hội có ảnh và tiêu đề -->
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="JDM LEGENDS 伝説 — Thư viện xe thể thao Nhật Bản" />
+    <meta
+      property="og:description"
+      content="12 huyền thoại JDM: thông số, lịch sử và văn hoá xe độ Nhật Bản."
+    />
+    <meta property="og:image" content="/chihara.jpg" />
+    <meta property="og:locale" content="vi_VN" />
+    <meta name="twitter:card" content="summary_large_image" />
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@300;400;500;600;700&family=Noto+Serif+JP:wght@300;600;900&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      rel="icon"
+      href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Ccircle cx='16' cy='16' r='14' fill='%23e01f2d'/%3E%3C/svg%3E"
+    />
+  </head>
+  <body>
+    <!-- ============================================================
+         PRELOADER — giữ nguyên như bản tĩnh gốc.
+         Đặt thẳng trong HTML (không qua React) để hiện ngay ở khung hình
+         đầu tiên; script bên dưới chạy lúc parse nên không có màn hình
+         trắng lóe lên trước khi hiệu ứng tải xuất hiện.
+         ============================================================ -->
+    <div class="preloader" id="preloader">
+      <div class="preloader__sun"></div>
+      <div class="preloader__inner">
+        <span class="preloader__jp">読み込み中</span>
+        <span class="preloader__en">JDM LEGENDS</span>
+        <div class="preloader__bar"><i id="preBar"></i></div>
+        <span class="preloader__pct" id="prePct">0%</span>
+
+        <!-- Tên tác giả hiện ngay dưới hiệu ứng tải -->
+        <p class="preloader__credit">
+          <span>Thiết kế &amp; phát triển bởi</span>
+          <b>Rinka-Mod</b>
+        </p>
+      </div>
+    </div>
+
+    <div id="root"></div>
+
+    <!-- ============================================================
+         Script chạy ngay lúc parse (không defer) — tương đương việc bản
+         tĩnh gốc đặt main.js ở cuối <body>. Nhiệm vụ:
+           • khoá cuộn nền trong lúc tải
+           • chạy thanh tiến trình, thêm .is-complete khi đầy
+           • mở trang: thêm body.is-ready + bắn sự kiện "site:ready"
+             để React bắt đầu đếm số liệu ở hero
+         ============================================================ -->
+    <script>
+      (function () {
+        var preloader = document.getElementById("preloader");
+        var bar = document.getElementById("preBar");
+        var pct = document.getElementById("prePct");
+        var reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+        // Thanh chạy xong -> giữ tên tác giả đứng thêm 0.6s rồi mới mở trang
+        var PRELOAD_FADE = 420;
+        var CREDIT_HOLD = 600;
+        var finished = false;
+
+        function finishPreload() {
+          if (finished) return;
+          finished = true;
+          preloader.classList.add("is-done");
+          document.body.classList.remove("is-locked");
+          document.body.classList.add("is-ready");
+          document.dispatchEvent(new CustomEvent("site:ready"));
+        }
+
+        if (reduced) {
+          finishPreload();
+          return;
+        }
+
+        document.body.classList.add("is-locked");
+        var progress = 0;
+        var timer = setInterval(function () {
+          progress = Math.min(100, progress + Math.random() * 16 + 6);
+          bar.style.width = progress + "%";
+          pct.textContent = Math.round(progress) + "%";
+          if (progress >= 100) {
+            clearInterval(timer);
+            // Nhấn nhẹ tên tác giả khi thanh vừa chạy xong
+            preloader.classList.add("is-complete");
+            setTimeout(finishPreload, PRELOAD_FADE + CREDIT_HOLD);
+          }
+        }, 130);
+        // Chốt an toàn: không giữ người dùng quá 4.2s
+        setTimeout(finishPreload, 4200);
+      })();
+    </script>
+
+    <script type="module" src="/src/main.tsx"></script>
+  </body>
+</html>

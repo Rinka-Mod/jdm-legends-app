@@ -1,0 +1,91 @@
+/* ==========================================================================
+   MOBILE 08 — TAB BAR DƯỚI: viên thuốc nổi, 6 mục gọn trong một hàng
+   Tách từ mobile.css (giữ nguyên thứ tự nạp).
+   Tác giả gốc / Original author: Rinka-Mod — © 2026. All rights reserved.
+   ========================================================================== */
+
+@media (max-width: 860px) {
+  body {
+    padding-bottom: calc(86px + env(safe-area-inset-bottom, 0px));
+  }
+
+  .mobile-bar {
+    left: 0.55rem;
+    right: 0.55rem;
+    bottom: calc(0.55rem + env(safe-area-inset-bottom, 0px));
+    gap: 0.1rem;
+    padding: 0.28rem 0.25rem;
+    border: 1px solid var(--line-2);
+    border-radius: 22px;
+    background: linear-gradient(180deg, rgba(26, 29, 40, 0.94), rgba(9, 11, 17, 0.97));
+    -webkit-backdrop-filter: blur(22px) saturate(170%);
+    backdrop-filter: blur(22px) saturate(170%);
+    box-shadow:
+      0 -2px 0 rgba(255, 255, 255, 0.03) inset,
+      0 22px 48px -22px rgba(0, 0, 0, 0.95);
+  }
+
+  .mobile-bar__item {
+    gap: 0.18rem;
+    padding: 0.5rem 0.1rem 0.42rem;
+    border-radius: 16px;
+    font-size: 0.5rem;
+    letter-spacing: 0.04em;
+    overflow: hidden;
+  }
+  .mobile-bar__item svg {
+    width: 22px;
+    height: 22px;
+    stroke-width: 1.8;
+  }
+  .mobile-bar__item span {
+    max-width: 100%;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+  }
+  /* Mục đang chọn: nền đỏ mờ + icon đỏ, không còn khối sáng chói */
+  .mobile-bar__item.is-active {
+    color: #fff;
+    background: rgba(224, 31, 45, 0.14);
+  }
+  .mobile-bar__item.is-active svg {
+    stroke: var(--red-2);
+    transform: translateY(-1px);
+    filter: drop-shadow(0 0 8px rgba(255, 61, 78, 0.55));
+  }
+  /* Vạch chỉ mục chuyển từ mép trên xuống dưới icon, ngắn và dịu hơn */
+  .mobile-bar__item i,
+  .mobile-bar__item.is-active i {
+    top: auto;
+    bottom: 0.26rem;
+    left: 50%;
+    width: 14px;
+    height: 3px;
+    transform: translateX(-50%);
+    box-shadow: none;
+    opacity: 0.85;
+  }
+  .mobile-bar__item i {
+    background: transparent;
+    opacity: 1;
+  }
+
+  /* Badge số xe đã lưu */
+  .mobile-bar__badge {
+    position: absolute;
+    top: 0.35rem;
+    right: 22%;
+    display: grid;
+    place-items: center;
+    min-width: 16px;
+    height: 16px;
+    padding: 0 0.26rem;
+    border-radius: 99px;
+    background: var(--red);
+    color: #fff;
+    font-size: 0.55rem;
+    font-weight: 600;
+    line-height: 1;
+  }
+}

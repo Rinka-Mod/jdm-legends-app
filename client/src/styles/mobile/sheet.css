@@ -1,0 +1,73 @@
+/* ==========================================================================
+   MOBILE 06 — BOTTOM SHEET BỘ LỌC: đầu dính, CTA dính đáy
+   Tách từ mobile.css (giữ nguyên thứ tự nạp).
+   Tác giả gốc / Original author: Rinka-Mod — © 2026. All rights reserved.
+   ========================================================================== */
+
+@media (max-width: 860px) {
+  .sheet__panel {
+    max-height: 90svh;
+    border-radius: 26px 26px 0 0;
+    padding: 0.9rem 1.1rem calc(0.6rem + env(safe-area-inset-bottom, 0px));
+  }
+  .sheet__handle {
+    width: 40px;
+    height: 4px;
+    margin-bottom: 0.85rem;
+    background: rgba(255, 255, 255, 0.28);
+  }
+  .sheet__head {
+    margin-bottom: 0.9rem;
+  }
+  .sheet__head h3 {
+    font-size: 1.35rem;
+    letter-spacing: 0.06em;
+  }
+  .sheet__close {
+    width: 34px;
+    height: 34px;
+    border-color: var(--line);
+    background: rgba(255, 255, 255, 0.045);
+  }
+
+  .sheet .toolbar {
+    gap: 0.85rem;
+    margin-bottom: 0;
+  }
+  .sheet .chip {
+    padding: 0.55rem 0.85rem;
+    font-size: 0.66rem;
+    letter-spacing: 0.08em;
+  }
+  .sheet .filters__inner {
+    gap: 0.4rem;
+  }
+  .sheet .search {
+    padding: 0.8rem 1rem;
+  }
+  .sheet .advpanel {
+    margin-top: 0.6rem;
+    padding: 0.95rem 1rem 1rem;
+    border-radius: 16px;
+  }
+  .sheet .advpanel__grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 0.6rem;
+  }
+  .sheet .advpanel__field input,
+  .sheet .advpanel__field select {
+    padding: 0.7rem 0.75rem;
+    font-size: 0.9rem;
+  }
+  /* Nút chốt luôn nằm trong tầm ngón tay, không phải cuộn xuống đáy */
+  .sheet__apply {
+    position: sticky;
+    bottom: 0;
+    width: 100%;
+    min-height: 50px;
+    justify-content: center;
+    margin-top: 0.9rem;
+    background: linear-gradient(120deg, var(--red), #9d1020);
+    box-shadow: 0 -16px 26px -14px rgba(0, 0, 0, 0.95);
+  }
+}

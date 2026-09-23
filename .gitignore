@@ -1,0 +1,20 @@
+node_modules/
+dist/
+*.log
+
+# SQLite (dữ liệu sinh ra khi chạy server lần đầu)
+server/data/
+*.sqlite
+*.sqlite-journal
+*.sqlite-wal
+*.sqlite-shm
+
+# Biến môi trường
+.env
+.env.local
+
+# Hệ điều hành / trình soạn thảo
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/

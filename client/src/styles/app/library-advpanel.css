@@ -1,0 +1,170 @@
+/* ==========================================================================
+   THƯ VIỆN — BẢNG BỘ LỌC NÂNG CAO
+   (dẫn động · khoảng năm · mã lực tối thiểu)
+
+   Nằm ngay trong `.toolbar` để trên PC bảng bung ra dưới thanh đang dính mà
+   không làm vỡ bo tròn của thẻ; trên mobile bảng nằm trong bottom sheet.
+
+   Tách từ index.css — giữ nguyên thứ tự nạp.
+   Tác giả / Author : Rinka-Mod — © 2026. All rights reserved.
+   ========================================================================== */
+
+.advpanel {
+  display: grid;
+  gap: 1rem;
+  /* Trong thanh công cụ dạng flex hàng ngang (tablet), bảng phải chiếm trọn
+     một hàng riêng. Chỉ dùng `width` — không dùng `flex-basis` vì ở mobile
+     thanh công cụ là flex cột, khi đó flex-basis sẽ hiểu là chiều CAO. */
+  width: 100%;
+  margin-top: 0.9rem;
+  padding: 1.1rem 1.2rem 1.2rem;
+  border: 1px solid var(--line-2);
+  border-radius: var(--r);
+  background: linear-gradient(160deg, rgba(18, 20, 28, 0.97), rgba(8, 9, 13, 0.99));
+  box-shadow: var(--shadow-lg);
+  backdrop-filter: blur(18px) saturate(150%);
+  animation: advPanelIn 0.34s var(--ease-out);
+}
+@keyframes advPanelIn {
+  from { opacity: 0; transform: translateY(-8px); }
+  to { opacity: 1; transform: none; }
+}
+
+.advpanel__head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+}
+.advpanel__head h4 {
+  font-family: var(--font-display);
+  font-size: 1.02rem;
+  font-weight: 400;
+  letter-spacing: 0.16em;
+  color: var(--white);
+}
+.advpanel__head h4 em {
+  font-family: var(--font-jp);
+  font-style: normal;
+  font-size: 0.7rem;
+  letter-spacing: 0.12em;
+  color: var(--muted);
+  margin-left: 0.5rem;
+}
+.advpanel__close {
+  display: grid;
+  place-items: center;
+  width: 32px;
+  height: 32px;
+  flex: none;
+  border: 1px solid var(--line-2);
+  border-radius: 50%;
+  transition: border-color 0.3s, transform 0.3s var(--ease);
+}
+.advpanel__close svg {
+  width: 14px;
+  height: 14px;
+  fill: none;
+  stroke: var(--white);
+  stroke-width: 2;
+  stroke-linecap: round;
+}
+.advpanel__close:hover {
+  border-color: var(--red);
+  transform: rotate(90deg);
+}
+
+.advpanel__grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  gap: 0.75rem;
+}
+
+.advpanel__field {
+  display: grid;
+  gap: 0.35rem;
+  min-width: 0;
+}
+.advpanel__field > span {
+  font-size: 0.6rem;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+.advpanel__field input,
+.advpanel__field select {
+  width: 100%;
+  padding: 0.62rem 0.8rem;
+  border: 1px solid var(--line);
+  border-radius: var(--r-sm);
+  background-color: rgba(255, 255, 255, 0.03);
+  color: var(--white);
+  font-family: inherit;
+  font-size: 0.84rem;
+  letter-spacing: 0.02em;
+  transition: border-color 0.3s, box-shadow 0.3s, background-color 0.3s;
+}
+.advpanel__field input::placeholder {
+  color: #6c7280;
+}
+.advpanel__field input:hover,
+.advpanel__field select:hover {
+  border-color: var(--line-2);
+}
+.advpanel__field input:focus,
+.advpanel__field select:focus {
+  outline: none;
+  border-color: var(--red);
+  box-shadow: var(--glow-red);
+  background-color: rgba(255, 255, 255, 0.05);
+}
+/* Bỏ mũi tên mặc định của <select>, thay bằng mũi tên vẽ theo tông màu theme */
+.advpanel__field select {
+  appearance: none;
+  -webkit-appearance: none;
+  padding-right: 2.1rem;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23969cab' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 0.7rem center;
+  background-size: 14px 14px;
+}
+.advpanel__field select option {
+  background: #0b0d13;
+  color: #fff;
+}
+/* Ẩn mũi tên tăng/giảm của input[type=number] cho gọn */
+.advpanel__field input[type="number"]::-webkit-outer-spin-button,
+.advpanel__field input[type="number"]::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+.advpanel__field input[type="number"] {
+  -moz-appearance: textfield;
+}
+
+.advpanel__foot {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.8rem;
+  padding-top: 0.9rem;
+  border-top: 1px dashed var(--line);
+}
+.advpanel__reset {
+  font-size: 0.66rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--muted);
+  transition: color 0.3s;
+}
+.advpanel__reset:hover:not(:disabled) {
+  color: var(--red-2);
+}
+.advpanel__reset:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+.advpanel__done {
+  padding: 0.6rem 1.2rem;
+  font-size: 0.7rem;
+}

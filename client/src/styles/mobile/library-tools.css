@@ -1,0 +1,156 @@
+/* ==========================================================================
+   MOBILE 04 — THƯ VIỆN: thanh công cụ gọn
+   Bố cục: [ ô tìm kiếm ] [ lọc ] [ Thẻ|Lưới ]  rồi một dòng thông tin.
+   Thay cho nút lớn + viewbar hai tầng của bản PC.
+
+   Tách từ mobile.css (giữ nguyên thứ tự nạp).
+   Tác giả gốc / Original author: Rinka-Mod — © 2026. All rights reserved.
+   ========================================================================== */
+
+@media (max-width: 860px) {
+  .mobile-tools {
+    display: flex;
+    align-items: center;
+    gap: 0.45rem;
+    position: sticky;
+    top: calc(3.7rem + env(safe-area-inset-top, 0px));
+    z-index: 60;
+    margin: 0 0 0.55rem;
+    padding: 0.42rem;
+    border-radius: 18px;
+    border: 1px solid var(--line);
+    background: linear-gradient(180deg, rgba(23, 26, 36, 0.92), rgba(9, 11, 17, 0.95));
+    -webkit-backdrop-filter: blur(20px) saturate(160%);
+    backdrop-filter: blur(20px) saturate(160%);
+    box-shadow:
+      0 20px 45px -28px rgba(0, 0, 0, 0.95),
+      inset 0 1px 0 rgba(255, 255, 255, 0.05);
+  }
+
+  /* Ô tìm kiếm: chỉ là nút mở sheet, chạm là bàn phím bật lên */
+  .mobile-tools__btn {
+    display: flex;
+    align-items: center;
+    gap: 0.55rem;
+    flex: 1 1 auto;
+    min-width: 0;
+    height: 42px;
+    padding: 0 0.8rem;
+    border: 0;
+    border-radius: 14px;
+    background: rgba(255, 255, 255, 0.055);
+    color: var(--muted);
+    font-size: 0.82rem;
+    text-align: left;
+    transition: background 0.3s, color 0.3s;
+  }
+  .mobile-tools__btn:active {
+    background: rgba(255, 255, 255, 0.09);
+  }
+  .mobile-tools__btn svg {
+    width: 17px;
+    height: 17px;
+    flex: none;
+    fill: none;
+    stroke: var(--red-2);
+    stroke-width: 2;
+    stroke-linecap: round;
+  }
+  .mobile-tools__btn span {
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+  }
+
+  /* Nút lọc: icon vuông, có chấm đếm điều kiện đang bật */
+  .mt-filter {
+    position: relative;
+    flex: none;
+    display: grid;
+    place-items: center;
+    width: 42px;
+    height: 42px;
+    border-radius: 14px;
+    border: 1px solid var(--line-2);
+    background: rgba(255, 255, 255, 0.04);
+    color: var(--muted);
+    transition: color 0.25s, border-color 0.25s, background 0.25s;
+  }
+  .mt-filter svg {
+    width: 17px;
+    height: 17px;
+    fill: none;
+    stroke: currentColor;
+    stroke-width: 2;
+    stroke-linecap: round;
+  }
+  .mt-filter.is-on {
+    color: var(--red-2);
+    border-color: rgba(224, 31, 45, 0.5);
+    background: rgba(224, 31, 45, 0.12);
+  }
+  .mt-filter b {
+    position: absolute;
+    top: -5px;
+    right: -5px;
+    display: grid;
+    place-items: center;
+    min-width: 17px;
+    height: 17px;
+    padding: 0 0.28rem;
+    border-radius: 99px;
+    background: var(--red);
+    color: #fff;
+    font-size: 0.58rem;
+    font-weight: 600;
+    line-height: 1;
+  }
+
+  /* Chuyển kiểu xem: hai lựa chọn, không có chữ thừa */
+  .viewbar {
+    display: grid;
+    flex: none;
+    width: 96px;
+    grid-auto-flow: column;
+    grid-auto-columns: 1fr;
+    gap: 0.2rem;
+    padding: 0.22rem;
+    border-radius: 13px;
+    background: rgba(255, 255, 255, 0.06);
+  }
+  .vb {
+    padding: 0.55rem 0;
+    border-radius: 11px;
+    font-size: 0.6rem;
+    letter-spacing: 0.08em;
+  }
+  .vb.is-active {
+    box-shadow: 0 8px 20px -13px rgba(224, 31, 45, 0.95);
+  }
+
+  /* Dòng thông tin kết quả — cuộn qua là trôi đi, không dính lại màn hình */
+  .mt-meta {
+    display: flex;
+    align-items: center;
+    gap: 0.55rem;
+    flex-wrap: wrap;
+    margin: 0 0 1.1rem 0.15rem;
+    font-size: 0.64rem;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--muted);
+  }
+  .mt-meta b {
+    color: var(--white);
+    font-weight: 600;
+  }
+  .mt-meta__clear {
+    font-size: 0.64rem;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--red-2);
+  }
+  .mt-meta__clear:active {
+    opacity: 0.7;
+  }
+}
