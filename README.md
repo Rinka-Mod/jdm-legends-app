@@ -50,11 +50,13 @@ jdm-legends-app/
 │   │       ├── app/             # CSS thành phần mới của bản Web App
 │   │       └── mobile/          # Lớp làm mới giao diện mobile (≤ 860px)
 │   └── public/                  # chihara.jpg, logoChatbot.png
-├── netlify.toml                 # Cấu hình deploy giao diện lên Netlify
+├── netlify.toml                 # Cấu hình deploy giao diện lên Netlify (kèm proxy /api → API)
 ├── docs/
 │   ├── cau-truc-thu-muc.md      # Giải thích từng thư mục / file dùng để làm gì
 │   ├── deploy-netlify-alwaysdata.md   # Hướng dẫn đưa web lên mạng miễn phí
 │   └── tong-hop-thong-tin-jdm-car.txt   # Tài liệu về xe JDM (từ bản gốc)
+├── huong-dan-deploy/            # Hướng dẫn deploy dạng CHUNG: 5 lỗi thực tế đã gặp + cách sửa
+│   └── README.md
 └── LICENSE.md
 ```
 
