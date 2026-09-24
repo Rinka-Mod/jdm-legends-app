@@ -332,7 +332,55 @@ Không thấy dòng này thì push **chưa xong**. Nếu hiện popup đăng nh�
 
 ---
 
-## 8. Ba cạm bẫy đáng nhớ nhất
+## 8. Bảo mật — kiểm tra trước khi coi là "xong"
+
+### Bắt buộc
+
+- [ ] **Khoá bí mật không được dùng giá trị mặc định trong mã nguồn.** Repo công khai nghĩa
+      là ai cũng biết khoá mặc định, và ai cũng tự ký được token đăng nhập của bất kỳ tài
+      khoản nào. Ứng dụng nên **từ chối khởi động** ở production khi thiếu khoá, chứ đừng
+      âm thầm dùng khoá mặc định.
+- [ ] **`.gitignore` chặn mọi biến thể**: `.env`, `.env.*`, kèm ngoại lệ `!.env.example`.
+      Chỉ cần lọt một file `.env.production` là lộ khoá. Kiểm tra lại bằng
+      `git check-ignore -v <file>`.
+- [ ] **Kiểm tra lịch sử Git, không chỉ file hiện tại** — xoá file ở commit mới **không**
+      làm nó biến mất khỏi commit cũ:
+      ```bash
+      git log --all --full-history --name-only -- '*.env' '*.sqlite' '*secret*'
+      ```
+- [ ] **Sao lưu database** trước mỗi lần cập nhật đụng tới schema, và tuyệt đối không đẩy file
+      database từ máy cá nhân lên máy chủ.
+
+### Điểm rất dễ bỏ sót
+
+- **Log của host có thể in ra biến môi trường.** Log site của alwaysdata in cả khoá ký JWT.
+  Đừng đăng log thô lên GitHub/chat/issue — che phần `env` trước. Lỡ lộ rồi thì **đổi khoá**
+  (đổi xong mọi người phải đăng nhập lại).
+- **`/health` chỉ nên trả `ok`.** Đừng trả đường dẫn tuyệt đối của database, phiên bản thư
+  viện hay tên máy chủ — đó là thông tin giúp kẻ tấn công dò hệ thống.
+- **Chặn brute-force cho `/login`.** Không giới hạn số lần thử thì một script đơn giản cũng
+  dò ra mật khẩu yếu. Tối thiểu: đếm số lần sai theo IP + email rồi tạm khoá.
+- **Giới hạn kích thước request** (`express.json({ limit: "200kb" })`). Gói Free chỉ có 256 MB
+  RAM — một payload khổng lồ là đủ làm tiến trình chết.
+- **Đừng trả mật khẩu hay hash trong phản hồi.** Kiểm tra bằng mắt một lần: gọi `/login` rồi
+  xem JSON trả về có trường `password` / `password_hash` không.
+- **Thông báo lỗi nên chung chung**: “email hoặc mật khẩu không đúng” thì tốt; còn “email này
+  chưa đăng ký” là đang giúp người khác dò xem ai đã có tài khoản.
+- **Token lưu ở `localStorage`** thì mọi lỗ hổng XSS đều lấy được token. Vì vậy **đừng bao giờ**
+  render HTML từ dữ liệu người dùng (`dangerouslySetInnerHTML`) — chỉ dùng cho hằng số trong mã.
+- **Ảnh đưa lên repo công khai**: kiểm tra EXIF/GPS trước, ảnh chụp điện thoại thường nhúng vị trí:
+  ```bash
+  grep -aq Exif anh.jpg && echo "CÓ metadata - cần xoá" || echo "sạch"
+  ```
+- **Thư viện lỗi thời**: chạy `npm audit --omit=dev`. Cảnh báo ở thư viện phía **máy chủ**
+  nghiêm trọng hơn nhiều so với phía giao diện — nhưng đọc kỹ mô tả, nhiều cảnh báo (như lỗi
+  SSR hydration) không áp dụng cho app của bạn.
+- **Một lỗi 502 không phải là lỗi bảo mật** — nhưng một lỗi 502 kéo dài cũng có nghĩa là bạn
+  không biết API còn sống hay không. Đặt cách kiểm tra `/health` định kỳ.
+
+---
+
+## 9. Ba cạm bẫy đáng nhớ nhất
 
 1. **Working directory của alwaysdata là đường dẫn tương đối** từ thư mục nhà, còn Command
    là đường dẫn tuyệt đối. Nhập sai một trong hai là 502 ở mọi đường dẫn.

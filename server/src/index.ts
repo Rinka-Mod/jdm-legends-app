@@ -58,8 +58,34 @@ app.use(
 );
 app.use(express.json({ limit: "200kb" }));
 
+/* ------------------------------------------------------------------
+   Header bảo mật tối thiểu — không cần thêm thư viện nào.
+
+   Cố tình KHÔNG đặt Content-Security-Policy: giao diện có script inline cho
+   màn hình chờ (xem client/index.html), CSP đặt sai một chút là trang trắng.
+   Nếu muốn dùng CSP thì phải kèm hash/nonce cho đúng script đó.
+   ------------------------------------------------------------------ */
+app.use((_req, res, next) => {
+  res.setHeader("X-Content-Type-Options", "nosniff");
+  res.setHeader("X-Frame-Options", "DENY");
+  res.setHeader("Referrer-Policy", "no-referrer");
+  next();
+});
+
+/* Token đăng nhập không được để trình duyệt hay proxy trung gian lưu lại. */
+app.use("/api/auth", (_req, res, next) => {
+  res.setHeader("Cache-Control", "no-store");
+  next();
+});
+
 app.get("/api/health", (_req, res) => {
-  res.json({ ok: true, service: "jdm-legends-api", database: DB_PATH });
+  /* Chỉ trả thông tin tối thiểu. Đường dẫn tuyệt đối của file SQLite (lộ tên tài
+     khoản và cấu trúc thư mục trên máy chủ) chỉ hiện khi bật HEALTH_DETAIL=1. */
+  res.json({
+    ok: true,
+    service: "jdm-legends-api",
+    ...(process.env.HEALTH_DETAIL === "1" ? { database: DB_PATH } : {}),
+  });
 });
 
 /** Số liệu tổng quan dùng cho sidebar/topbar. */

@@ -9,9 +9,11 @@ server/data/
 *.sqlite-wal
 *.sqlite-shm
 
-# Biến môi trường
+# Biến môi trường — chặn MỌI biến thể (.env.production, .env.development…),
+# vì chỉ cần lọt một file là lộ khoá bí mật. Chỉ giữ lại file mẫu (không có bí mật).
 .env
-.env.local
+.env.*
+!.env.example
 
 # Hệ điều hành / trình soạn thảo
 .DS_Store

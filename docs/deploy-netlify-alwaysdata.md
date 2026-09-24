@@ -143,7 +143,11 @@ node -e "console.log(crypto.randomUUID()+crypto.randomUUID())"
 
 ```bash
 curl https://<tài-khoản>.alwaysdata.net/api/health
-# -> {"ok":true,"service":"jdm-legends-api","database":"/home/.../jdm.sqlite"}
+# -> {"ok":true,"service":"jdm-legends-api"}
+
+# Đường dẫn file SQLite KHÔNG được trả ra mặc định (tránh lộ cấu trúc máy chủ).
+# Khi cần kiểm tra DATABASE_PATH trỏ đúng chỗ, khai báo tạm HEALTH_DETAIL=1 rồi Restart:
+# -> {"ok":true,"service":"jdm-legends-api","database":"/home/<tài-khoản>/jdm-api/data/jdm.sqlite"}
 
 curl "https://<tài-khoản>.alwaysdata.net/api/cars?brand=Nissan" | head -c 200
 ```
@@ -292,6 +296,40 @@ Hai điều kiện bắt buộc:
     bền nhất, chạy 24/7, nhưng cần thẻ để xác minh và phải tự cài Node rồi cho chạy nền.
 - Giao diện **vẫn nên để ở Netlify** kể cả khi API nằm ở VPS — Netlify có CDN và deploy
   tự động từ GitHub, cập nhật giao diện nhanh hơn nhiều.
+
+---
+
+## 8. Bảo mật — đã kiểm tra gì và cần làm gì
+
+Mục này là kết quả **kiểm thử thật** trên bản đang chạy (dựng server cục bộ với database tạm
+rồi gọi thử), không phải chỉ đọc code.
+
+### Đã chắc chắn an toàn
+
+| Hạng mục | Kết quả kiểm tra |
+|---|---|
+| **SQL injection** | Mọi truy vấn đều dùng tham số `?`. Thử `q=' OR 1=1--` và `brand=Honda' DROP TABLE cars--` → trả về rỗng, bảng `cars` vẫn nguyên **12 dòng** |
+| **Mật khẩu** | Băm bcrypt (cost 10), `password_hash` **không bao giờ** nằm trong phản hồi API. Đăng nhập sai trả thông báo chung *“Email hoặc mật khẩu không đúng”* |
+| **Token giả mạo** | Token `alg:none`, token bị sửa 1 ký tự, token ký bằng khoá mặc định công khai → **đều bị 401** |
+| **API cần đăng nhập** | `/api/garage` và `/api/auth/me` không có token → 401. `user_id` lấy **từ token**, không lấy từ tham số gửi lên → không xem được garage của người khác |
+| **Lộ thông tin qua lỗi** | Lỗi không mong đợi trả câu chung; stack trace chỉ ghi ở log máy chủ |
+| **`/api/health`** | Không còn trả đường dẫn tuyệt đối của file SQLite (chỉ hiện khi bật `HEALTH_DETAIL=1`) |
+| **Header bảo mật** | Có `X-Content-Type-Options: nosniff`, `X-Frame-Options: DENY`, `Referrer-Policy: no-referrer`; `/api/auth` trả `Cache-Control: no-store` |
+| **`.env`** | Bị `.gitignore` chặn. Kiểm tra **cả lịch sử Git**: **chưa từng** có file `.env` thật hay `.sqlite` nào được commit |
+| **Thông tin cá nhân trong repo** | Không có email thật, số điện thoại, IP hay đường dẫn máy cá nhân nào. Ảnh `chihara.jpg` / `logoChatbot.png` **không** nhúng EXIF/GPS |
+| **Thư viện** | Phía server: **0 lỗ hổng**. Phía giao diện: 2 cảnh báo *moderate* ở `react-router-dom` 6.x — **không khai thác được** ở dự án này vì không dùng SSR và không điều hướng tới địa chỉ do người dùng nhập |
+
+### Bạn cần tự làm
+
+1. **Đổi `JWT_SECRET`** nếu khoá hiện tại từng bị dán ở đâu đó công khai. Lưu ý quan trọng:
+   **log site của alwaysdata in ra TOÀN BỘ biến môi trường, gồm cả `JWT_SECRET`** — đừng bao
+   giờ đăng log thô lên GitHub/chat/issue. Đổi khoá rồi thì mọi người phải đăng nhập lại.
+2. **Chưa có chặn brute-force** cho `/api/auth/login` — ai cũng thử được mật khẩu không giới
+   hạn số lần. Cách xử lý ở [`../huong-dan-deploy/README.md`](../huong-dan-deploy/README.md),
+   mục *Bảo mật*.
+3. **Repo GitHub đang ở chế độ công khai.** Đó là lựa chọn hợp lệ (LICENSE yêu cầu ghi công),
+   nhưng nghĩa là mọi thứ đã commit là công khai **vĩnh viễn, kể cả sau khi xoá**. Cân nhắc kỹ
+   trước khi commit ảnh chụp panel, file log hay database.
 
 ---
 
