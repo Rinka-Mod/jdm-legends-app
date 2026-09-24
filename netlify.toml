@@ -3,7 +3,7 @@
 #
 # QUAN TRỌNG: Netlify chỉ chạy được PHẦN TĨNH (front-end React đã build).
 # Nó KHÔNG chạy được Express và KHÔNG giữ được file SQLite, nên API phải nằm
-# ở một máy chủ khác (xem mục "VITE_API_BASE" bên dưới).
+# ở một máy chủ khác (alwaysdata) — xem quy tắc proxy "/api/*" bên dưới.
 #
 # `base = "client"`: Netlify sẽ cài dependency và chạy build BÊN TRONG thư mục
 # client. Trước đây để build ở thư mục gốc sẽ hỏng, vì `npm install` ở gốc chỉ
@@ -20,16 +20,40 @@
   command = "npm ci && npm run build"
   publish = "dist"
 
-[build.environment]
-  # Trỏ front-end tới API đã deploy ở nơi khác (nhớ có /api ở cuối).
-  # Bỏ dấu # ở dòng dưới và thay bằng địa chỉ thật của bạn rồi deploy lại;
-  # đổi biến môi trường thì phải BUILD LẠI, Netlify không tự áp dụng cho bản cũ.
-  # Nếu bỏ trống, front-end gọi "/api" trên chính tên miền Netlify → sẽ lỗi
-  # "Không kết nối được máy chủ" vì Netlify không có API.
-  # VITE_API_BASE = "https://ten-mien-api-cua-ban/api"
+# KHÔNG khai báo VITE_API_BASE ở đây. Giao diện cứ gọi đường dẫn tương đối
+# "/api" như khi chạy ở máy cá nhân, rồi Netlify chuyển tiếp sang alwaysdata
+# bằng quy tắc proxy bên dưới. Nhờ vậy trình duyệt luôn gọi CÙNG tên miền, nên
+# KHÔNG bao giờ gặp lỗi CORS, và đổi địa chỉ API về sau cũng không phải build lại
+# (biến VITE_* chỉ áp dụng lúc build).
+#
+# Nếu trong Netlify → Site configuration → Environment variables vẫn còn biến
+# VITE_API_BASE thì hãy XOÁ: khi có biến đó, giao diện gọi THẲNG sang alwaysdata
+# nên lỗi CORS quay lại, còn quy tắc proxy dưới đây không được dùng tới.
+
+# ==========================================================================
+# Chuyển tiếp lời gọi API sang máy chủ alwaysdata.
+#
+#   from = "/api/*"          → mọi đường dẫn bắt đầu bằng /api/
+#   to   = ".../api/:splat"  → ":splat" là phần còn lại, được dán vào sau /api.
+#                              Ví dụ /api/cars?brand=Nissan trở thành
+#                              https://jdmlegends.alwaysdata.net/api/cars?brand=Nissan
+#   status = 200             → proxy im lặng. KHÔNG dùng 301/302, vì trình duyệt
+#                              sẽ tự đổi địa chỉ và lỗi CORS quay lại.
+#
+# THỨ TỰ LÀ QUY TẮC — quy tắc này PHẢI nằm TRƯỚC "/*" ở cuối file. Nếu đặt sau,
+# "/api/*" sẽ bị quy tắc "/*" bắt trước và trả về index.html: giao diện chờ JSON
+# nhưng nhận HTML (kèm status 200) nên vỡ ngay ở bước JSON.parse — đúng kiểu lỗi
+# "Không kết nối được máy chủ" mà không có gì trong log API cả.
+# ==========================================================================
+[[redirects]]
+  from = "/api/*"
+  to = "https://jdmlegends.alwaysdata.net/api/:splat"
+  status = 200
+  force = true
 
 # React Router dùng đường dẫn thật (/car/:id, /login, /garage). Không có quy
 # tắc này thì mở thẳng hoặc F5 ở các URL đó sẽ ra trang 404 của Netlify.
+# Phải để CUỐI CÙNG vì nó khớp MỌI đường dẫn.
 [[redirects]]
   from = "/*"
   to = "/index.html"

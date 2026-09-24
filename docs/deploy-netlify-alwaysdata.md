@@ -102,6 +102,21 @@ mkdir -p data              # nơi đặt file SQLite
 node /home/<tài-khoản>/jdm-api/dist/index.js
 ```
 
+> ⚠️ **Ô Working directory phải là đường dẫn TƯƠNG ĐỐI tính từ thư mục nhà — điền
+> `jdm-api`, KHÔNG điền `/home/<tài-khoản>/jdm-api`.** alwaysdata tự ghép thư mục nhà
+> (`/home/<tài-khoản>`) vào trước giá trị bạn nhập, nên nếu dán đường dẫn tuyệt đối vào,
+> thư mục làm việc sẽ bị **lặp hai lần**:
+>
+> ```
+> cwd: /home/jdmlegends/home/jdmlegends/jdm-api      ← sai, không tồn tại
+> cwd: /home/jdmlegends/jdm-api                       ← đúng
+> ```
+>
+> Hậu quả: trong `~/admin/logs/sites/` sẽ có `Upstream starting failed: node
+> /home/.../dist/index.js (reason: No such file or directory)`, còn trình duyệt chỉ thấy
+> **502 Bad Gateway** ở mọi đường dẫn. Bỏ trắng ô này cũng chạy được, vì `DATABASE_PATH`
+> đã là đường dẫn tuyệt đối. Sửa xong nhớ bấm **Restart** site.
+
 > Ứng dụng **phải** nghe đúng IP và cổng mà alwaysdata cấp. Server đã được sửa để đọc
 > biến `HOST` / `IP` / `PORT` do alwaysdata truyền vào, nên bạn không cần làm gì thêm.
 
@@ -168,6 +183,8 @@ curl "https://<tài-khoản>.alwaysdata.net/api/cars?brand=Nissan" | head -c 200
 | Hiện tượng | Nguyên nhân & cách sửa |
 |---|---|
 | Web báo *“Không kết nối được máy chủ”* | Chưa đặt `VITE_API_BASE`, hoặc đặt rồi nhưng **không deploy lại** |
+| Mọi đường dẫn của `*.alwaysdata.net` trả **502 Bad Gateway**, log site có `Upstream starting failed ... (reason: No such file or directory)` | Ô **Working directory** của site đang ghi đường dẫn tuyệt đối nên bị lặp (`cwd: /home/x/home/x/jdm-api`). Sửa thành `jdm-api` (tương đối từ thư mục nhà) hoặc để trắng, rồi **Restart** site |
+| Mở `https://<tài-khoản>.alwaysdata.net/` ra `Cannot GET /` | **Bình thường** — đây là máy chủ API, không phải giao diện. Giao diện nằm ở Netlify; chỉ cần kiểm tra `/api/health` |
 | Console báo lỗi **CORS** | `CLIENT_ORIGIN` trên alwaysdata không khớp tên miền Netlify. Thêm đúng tên miền (kể cả `www`) và **restart site** |
 | `Cannot find module 'node:sqlite'` | Node trên alwaysdata < 22.13. Đặt `NODEJS_VERSION=24` rồi restart |
 | Web deploy xong vẫn lỗi build `tsc: not found` | Repo vẫn còn `netlify.toml` cũ. Thay bằng bản trong dự án này |
