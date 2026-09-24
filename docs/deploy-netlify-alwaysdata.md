@@ -36,8 +36,9 @@ chỉ có duy nhất `concurrently`. Trong khi lệnh build ở gốc lại gọ
 cho React Router.
 
 > Nếu repo của bạn đang có một `netlify.toml` khác, hãy **thay bằng bản trong dự án này**
-> rồi commit lại. Kiểm tra lại trong Netlify: **Site configuration → Build & deploy →
-> Build settings** phải hiện `base: client`, `publish: dist`.
+> rồi commit lại. Khi repo đã có `netlify.toml`, Netlify **lấy cấu hình từ chính file đó** và
+> phần Build settings trong panel chỉ còn để tham khảo — nên hãy kiểm tra trực tiếp trong
+> file: phải có `base = "client"` và `publish = "dist"`.
 
 ---
 
@@ -128,7 +129,7 @@ Thêm các biến sau (ở phần **Environment** của tài khoản, hoặc đi
 | Biến | Giá trị | Ghi chú |
 |---|---|---|
 | `JWT_SECRET` | một chuỗi ngẫu nhiên rất dài | **Bắt buộc đổi** — nếu bỏ trống, server dùng khoá mặc định trong mã nguồn, ai đọc code cũng tự ký được token đăng nhập |
-| `CLIENT_ORIGIN` | `https://<tên-site>.netlify.app` | Nhiều tên miền thì cách nhau dấu phẩy. Sai giá trị này sẽ báo lỗi CORS |
+| `CLIENT_ORIGIN` | `https://<tên-site>.netlify.app` | Nhiều tên miền thì cách nhau dấu phẩy. **Chỉ cần khi dùng Cách A** (gọi API trực tiếp); dùng proxy ở mục 4 thì đặt hay không cũng được |
 | `DATABASE_PATH` | `/home/<tài-khoản>/jdm-api/data/jdm.sqlite` | Để trong thư mục nhà cho chắc chắn không bị mất |
 | `NODEJS_VERSION` | `24` | Nếu Node mặc định của tài khoản không phải 24 |
 
@@ -147,11 +148,84 @@ curl https://<tài-khoản>.alwaysdata.net/api/health
 curl "https://<tài-khoản>.alwaysdata.net/api/cars?brand=Nissan" | head -c 200
 ```
 
+### A9. Cập nhật API về sau (không làm mất dữ liệu)
+
+Mỗi lần sửa code back-end, làm đúng 3 bước:
+
+```bash
+# 1) Build ở máy bạn
+cd server
+npm run build
+
+# 2) Đẩy lên máy chủ — CHỈ đẩy dist/, tuyệt đối KHÔNG đẩy data/
+scp -r dist <tài-khoản>@ssh-<tài-khoản>.alwaysdata.net:~/jdm-api/
+```
+
+```bash
+# 3) Trên máy chủ
+ssh <tài-khoản>@ssh-<tài-khoản>.alwaysdata.net
+cd ~/jdm-api
+npm ci --omit=dev      # chỉ cần khi package.json có thay đổi
+mkdir -p data          # nơi chứa SQLite — phải còn nguyên
+```
+
+Rồi **Web → Sites → Restart** site và kiểm tra lại `/api/health`.
+
+> ⚠️ **Đừng bao giờ đẩy `data/` hay file `.sqlite` từ máy bạn lên máy chủ.** Dữ liệu thật
+> (tài khoản, xe đã lưu, email bản tin) nằm trên máy chủ; đẩy đè lên là **mất sạch**. Muốn
+> sao lưu thì kéo file *từ máy chủ về*:
+>
+> ```bash
+> scp <tài-khoản>@ssh-<tài-khoản>.alwaysdata.net:~/jdm-api/data/jdm.sqlite ./backup-jdm.sqlite
+> ```
+>
+> Nên sao lưu trước mỗi lần cập nhật có đụng tới database.
+
+Sau khi Restart, đăng nhập thử một tài khoản cũ để chắc chắn database vẫn nguyên.
+
 ---
 
 ## 4. Phần B — Nối Netlify vào API
 
-1. Netlify → **Site configuration → Environment variables** → thêm:
+Giao diện gọi API bằng đường dẫn **tương đối** `/api` (xem `client/src/lib/api.ts`), còn
+Netlify thì không có API. Vậy phải chuyển tiếp `/api/*` sang alwaysdata. Có 2 cách — **chọn
+một, đừng dùng cả hai**.
+
+### Cách B — để Netlify làm proxy (**khuyên dùng**, dự án đã cấu hình sẵn)
+
+[`../netlify.toml`](../netlify.toml) đã có sẵn quy tắc này; bạn chỉ cần thay địa chỉ API bằng
+đúng tên miền của mình:
+
+```toml
+[[redirects]]
+  from = "/api/*"
+  to = "https://<tài-khoản>.alwaysdata.net/api/:splat"
+  status = 200
+  force = true
+```
+
+Rồi commit + push để Netlify build lại. **Không cần** đặt biến môi trường nào.
+
+Vì sao nên chọn cách này:
+
+- Trình duyệt chỉ gọi **cùng tên miền** Netlify → **không bao giờ gặp lỗi CORS**, kể cả
+  `CLIENT_ORIGIN` bên alwaysdata có sai.
+- Đổi địa chỉ API chỉ cần sửa dòng `to` rồi deploy lại — không phải deploy lại vì biến môi
+  trường (biến `VITE_*` chỉ áp dụng lúc build nên rất dễ quên).
+
+Hai điều kiện bắt buộc:
+
+1. Quy tắc `/api/*` phải nằm **TRƯỚC** quy tắc `/*` → `/index.html` ở cuối file. Netlify duyệt
+   từ trên xuống, quy tắc nào khớp trước thì thắng. Đặt sai thứ tự thì `/api/*` bị trả về
+   `index.html` **kèm status 200** → giao diện nhận HTML trong khi chờ JSON nên vỡ ở
+   `JSON.parse`, mà **log của API không ghi gì cả** vì request không hề tới API.
+2. Netlify → **Project configuration → Environment variables**: nếu có biến `VITE_API_BASE`
+   thì **XOÁ**. Còn biến đó thì giao diện gọi thẳng sang alwaysdata (biến thắng proxy) và lỗi
+   CORS quay lại.
+
+### Cách A — dùng biến `VITE_API_BASE` (chỉ khi không dùng được proxy)
+
+1. Netlify → **Project configuration → Environment variables** → thêm:
 
    | Key | Value |
    |---|---|
@@ -159,7 +233,10 @@ curl "https://<tài-khoản>.alwaysdata.net/api/cars?brand=Nissan" | head -c 200
 
    (nhớ có `/api` ở cuối, không có dấu `/` thừa ở cuối cùng)
 
-2. **Deploys → Trigger deploy → Clear cache and deploy site.**
+2. Bắt buộc khai báo `CLIENT_ORIGIN` trên alwaysdata cho khớp tên miền Netlify (xem A7) — kể
+   cả tên miền deploy preview `https://<id>--<tên-site>.netlify.app` nếu bạn dùng.
+
+3. **Deploys → Trigger deploy → Clear cache and deploy site.**
    Biến `VITE_*` là biến **lúc build** — đổi biến mà không deploy lại thì web cũ vẫn giữ
    địa chỉ API cũ.
 
@@ -168,6 +245,8 @@ curl "https://<tài-khoản>.alwaysdata.net/api/cars?brand=Nissan" | head -c 200
 ## 5. Kiểm tra sau khi xong
 
 - [ ] `https://<tài-khoản>.alwaysdata.net/api/health` trả `{"ok":true,...}`
+- [ ] `https://<tên-site>.netlify.app/api/health` **cũng** trả `{"ok":true,...}` — chứng minh
+      Netlify đã chuyển tiếp đúng sang API (nếu ra **HTML** thì xem mục 6)
 - [ ] Mở web Netlify: phần **Thư viện** hiện đủ xe (không còn dòng báo lỗi kết nối)
 - [ ] Bấm lọc theo thương hiệu, tìm kiếm, sắp xếp — đều chạy
 - [ ] Đăng ký một tài khoản → lưu 1–2 xe vào Garage → **F5** vẫn còn
@@ -182,15 +261,20 @@ curl "https://<tài-khoản>.alwaysdata.net/api/cars?brand=Nissan" | head -c 200
 
 | Hiện tượng | Nguyên nhân & cách sửa |
 |---|---|
-| Web báo *“Không kết nối được máy chủ”* | Chưa đặt `VITE_API_BASE`, hoặc đặt rồi nhưng **không deploy lại** |
+| Web báo *“Không kết nối được máy chủ”* | Dùng **Cách B**: quy tắc `/api/*` thiếu hoặc nằm **sau** quy tắc `/*`, hoặc Netlify chưa build lại. Dùng **Cách A**: chưa đặt `VITE_API_BASE`, đặt rồi mà không deploy lại, hoặc còn sót biến đó nên proxy bị vô hiệu |
+| `https://<tên-site>.netlify.app/api/...` trả về **HTML** kèm status 200 thay vì JSON | Quy tắc `/api/*` chưa có hoặc bị đặt **sau** `/*` → `/index.html`. Kiểm tra thứ tự trong `netlify.toml`. Dấu hiệu nhận biết: request **không hề xuất hiện** trong log của API |
 | Mọi đường dẫn của `*.alwaysdata.net` trả **502 Bad Gateway**, log site có `Upstream starting failed ... (reason: No such file or directory)` | Ô **Working directory** của site đang ghi đường dẫn tuyệt đối nên bị lặp (`cwd: /home/x/home/x/jdm-api`). Sửa thành `jdm-api` (tương đối từ thư mục nhà) hoặc để trắng, rồi **Restart** site |
 | Mở `https://<tài-khoản>.alwaysdata.net/` ra `Cannot GET /` | **Bình thường** — đây là máy chủ API, không phải giao diện. Giao diện nằm ở Netlify; chỉ cần kiểm tra `/api/health` |
-| Console báo lỗi **CORS** | `CLIENT_ORIGIN` trên alwaysdata không khớp tên miền Netlify. Thêm đúng tên miền (kể cả `www`) và **restart site** |
+| Console báo lỗi **CORS** | Đang dùng **Cách A** mà `CLIENT_ORIGIN` trên alwaysdata không khớp tên miền Netlify. Thêm đúng tên miền (kể cả `www`) và **restart site**. Dùng **Cách B** (proxy) thì lỗi này không thể xảy ra |
 | `Cannot find module 'node:sqlite'` | Node trên alwaysdata < 22.13. Đặt `NODEJS_VERSION=24` rồi restart |
 | Web deploy xong vẫn lỗi build `tsc: not found` | Repo vẫn còn `netlify.toml` cũ. Thay bằng bản trong dự án này |
 | Mở `/car/supra-a80` ra trang 404 của Netlify | Thiếu mục `[[redirects]]` trong `netlify.toml` |
 | Tài khoản/garage biến mất sau khi restart | `DATABASE_PATH` trỏ ra ngoài thư mục nhà, hoặc chưa khai báo nên ghi vào thư mục tạm |
 | Lần đầu mở web rất chậm rồi mới chạy | Bình thường với host miễn phí — tiến trình có thể “ngủ” khi lâu không ai truy cập |
+
+> Danh sách lỗi trên — viết theo dạng **chung cho mọi dự án**, kèm cách chẩn đoán (log của
+> host, `curl -i`, F12 Network) — nằm ở
+> [`../huong-dan-deploy/README.md`](../huong-dan-deploy/README.md).
 
 ---
 

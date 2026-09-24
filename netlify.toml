@@ -26,7 +26,7 @@
 # KHÔNG bao giờ gặp lỗi CORS, và đổi địa chỉ API về sau cũng không phải build lại
 # (biến VITE_* chỉ áp dụng lúc build).
 #
-# Nếu trong Netlify → Site configuration → Environment variables vẫn còn biến
+# Nếu trong Netlify → Project configuration → Environment variables vẫn còn biến
 # VITE_API_BASE thì hãy XOÁ: khi có biến đó, giao diện gọi THẲNG sang alwaysdata
 # nên lỗi CORS quay lại, còn quy tắc proxy dưới đây không được dùng tới.
 

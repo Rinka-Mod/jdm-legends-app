@@ -81,7 +81,30 @@ API tồn tại — nên luôn phải "nối" bằng tay ở đúng **một tron
 
 ### 3.2. Netlify (phía giao diện)
 
-Chọn **một** trong hai cách nối:
+Chọn **một** trong hai cách nối. **Cách B gọn hơn và an toàn hơn**, nên dùng nó trừ khi bạn
+có lý do riêng.
+
+**Cách B — để Netlify làm proxy** (khuyên dùng)
+
+Thêm vào `netlify.toml`, **đặt TRƯỚC** rule `/*` → `index.html`:
+
+```toml
+[[redirects]]
+  from = "/api/*"
+  to = "https://<tài-khoản>.alwaysdata.net/api/:splat"
+  status = 200
+  force = true
+```
+
+Rồi commit + push. Không cần đặt biến môi trường nào.
+
+- Trình duyệt chỉ gọi **cùng tên miền** Netlify → **lỗi CORS vĩnh viễn không xảy ra**, và
+  `CLIENT_ORIGIN` bên API trở thành không cần thiết.
+- Đổi địa chỉ API chỉ cần sửa dòng `to` rồi deploy lại — không phải build lại vì biến.
+- `status = 200` (proxy im lặng). **Đừng dùng 301/302**: trình duyệt sẽ tự đổi địa chỉ sang
+  tên miền API và lỗi CORS quay lại.
+- Nếu trong Netlify còn sót biến `VITE_API_BASE` thì **phải xoá** — biến đó thắng proxy và
+  lỗi CORS quay lại.
 
 **Cách A — biến môi trường `VITE_API_BASE`** (tên biến tuỳ framework)
 
@@ -92,24 +115,6 @@ VITE_API_BASE = https://<tài-khoản>.alwaysdata.net/api
 - Biến `VITE_*` chỉ áp dụng **lúc build** → đổi biến **phải deploy lại**, không tự áp dụng.
 - Bắt buộc `CLIENT_ORIGIN` trên alwaysdata phải khớp tên miền Netlify, nếu không sẽ lỗi CORS.
 - Đây là cách dễ quên cấu hình nhất và cũng dễ phát sinh lỗi CORS nhất.
-
-**Cách B — để Netlify làm proxy** (khuyên dùng)
-
-Thêm vào `netlify.toml`, **đặt trước** rule `/*` → `index.html`:
-
-```toml
-[[redirects]]
-  from = "/api/*"
-  to = "https://<tài-khoản>.alwaysdata.net/api/:splat"
-  status = 200
-  force = true
-```
-
-- Trình duyệt chỉ gọi **cùng tên miền** Netlify → **lỗi CORS vĩnh viễn không xảy ra**, và
-  `CLIENT_ORIGIN` bên API trở thành không cần thiết.
-- Đổi địa chỉ API chỉ cần sửa dòng `to` rồi deploy lại — không phải build lại vì biến.
-- `status = 200` (proxy im lặng). **Đừng dùng 301/302**: trình duyệt sẽ tự đổi địa chỉ sang
-  tên miền API và lỗi CORS quay lại.
 
 ---
 
