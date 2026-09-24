@@ -21,8 +21,11 @@ export function RegisterPage() {
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
-    if (password.length < 6) {
-      setError("Mật khẩu cần ít nhất 6 ký tự.");
+    /* Chỉ kiểm độ dài cho phản hồi nhanh; các luật sâu hơn (mật khẩu phổ biến,
+       chuỗi dễ đoán, trùng email/tên) do máy chủ quyết định và trả về thông báo
+       cụ thể — tránh phải viết luật hai lần rồi lệch nhau. */
+    if (password.length < 8) {
+      setError("Mật khẩu cần ít nhất 8 ký tự.");
       return;
     }
     setBusy(true);
@@ -100,9 +103,9 @@ export function RegisterPage() {
               type="password"
               value={password}
               required
-              minLength={6}
+              minLength={8}
               autoComplete="new-password"
-              placeholder="Ít nhất 6 ký tự"
+              placeholder="Ít nhất 8 ký tự"
               onChange={(e) => setPassword(e.target.value)}
             />
           </label>

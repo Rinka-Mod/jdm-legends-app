@@ -32,16 +32,18 @@ Express phục vụ API `/api/*`, và khi chạy production thì phục vụ lu�
 
 | File | Tác dụng |
 |---|---|
-| `src/index.ts` | Điểm khởi động: tạo Express app, gắn middleware, gắn các nhóm route, phục vụ `client/dist` khi chạy production. |
+| `src/index.ts` | Điểm khởi động: tạo Express app, gắn middleware (CORS, header bảo mật, giới hạn số lần thử), gắn các nhóm route, phục vụ `client/dist` khi chạy production. Bật `trust proxy` để lấy đúng IP người dùng khi chạy sau proxy. |
 | `src/db.ts` | Lớp dữ liệu SQLite: tạo bảng, và **seed** dữ liệu ở lần chạy đầu. Dùng module `node:sqlite` có sẵn của Node ≥ 22.5 nên không cần cài native dependency. |
 | `src/repository.ts` | Toàn bộ câu truy vấn: xe, thời kỳ lịch sử, chủ đề văn hoá, FAQ. Route không viết SQL trực tiếp mà gọi qua đây. |
-| `src/middleware/auth.ts` | Xác thực JWT: `requireAuth` (bắt buộc đăng nhập) và `optionalAuth` (có thì dùng, không có vẫn chạy). |
+| `src/middleware/auth.ts` | Xác thực JWT: `requireAuth` (bắt buộc đăng nhập) và `optionalAuth` (có thì dùng, không có vẫn chạy). **Từ chối khởi động** ở production nếu thiếu `JWT_SECRET`, và chỉ nhận đúng thuật toán `HS256`. |
+| `src/middleware/rateLimit.ts` | Chặn dò mật khẩu: đếm số lần đăng nhập **thất bại** theo từng email (10 lần/15 phút) và theo IP (100 lần/15 phút); đăng nhập đúng thì xoá bộ đếm của tài khoản đó. Giới hạn tạo tài khoản 20 lần/giờ mỗi IP. |
+| `src/password.ts` | Chính sách mật khẩu: tối thiểu 8 ký tự, chặn danh sách mật khẩu bị dò nhiều nhất, chuỗi quá dễ đoán (`12345678`, `abcdefgh`) và mật khẩu chứa chính tên/email người đăng ký. |
 | `src/data/cars.ts` | Dữ liệu gốc của 12 mẫu xe JDM (thông số, câu chuyện, điểm nhấn). |
 | `src/data/content.ts` | Dữ liệu 6 thời kỳ lịch sử và 8 chủ đề văn hoá. |
 | `src/data/faq.ts` | Kho tri thức của trợ lý ảo Chihara Mai: lời chào + 20 câu hỏi/đáp. |
 | `src/routes/cars.ts` | `GET /api/cars`, `/cars/:id`, `/brands`, `/stats` — lọc, tìm, sắp xếp phía server bằng SQL. |
 | `src/routes/content.ts` | `GET /api/eras`, `/culture`, `/faq`; `POST /api/faq/ask` (chuẩn hoá tiếng Việt không dấu rồi so khớp câu trả lời gần nhất); `POST /api/subscribe`. |
-| `src/routes/auth.ts` | `POST /api/auth/register`, `/auth/login`, `GET /auth/me`. Mật khẩu băm bằng bcrypt, token JWT hạn 7 ngày. |
+| `src/routes/auth.ts` | `POST /api/auth/register`, `/auth/login`, `GET /auth/me`. Mật khẩu băm bằng bcrypt (cost 10), token JWT hạn 7 ngày; mật khẩu phải qua `src/password.ts` trước khi băm. |
 | `src/routes/garage.ts` | `GET /api/garage`, `POST /garage/:carId`, `DELETE /garage/:carId` — xe người dùng đã lưu. |
 | `.env.example` | Mẫu biến môi trường (cổng, JWT secret). Copy thành `.env` khi cần đổi. |
 | `tsconfig.json` · `package.json` | Cấu hình TypeScript và script `dev` / `build` / `start` / `typecheck`. |

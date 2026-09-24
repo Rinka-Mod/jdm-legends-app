@@ -24,6 +24,7 @@ import { carsRouter } from "./routes/cars.js";
 import { contentRouter } from "./routes/content.js";
 import { authRouter } from "./routes/auth.js";
 import { garageRouter } from "./routes/garage.js";
+import { loginRateLimit, registerRateLimit } from "./middleware/rateLimit.js";
 
 const PORT = Number(process.env.PORT ?? 4000);
 
@@ -45,6 +46,13 @@ const CLIENT_ORIGINS = (process.env.CLIENT_ORIGIN ?? "http://localhost:5173")
 seedDatabase();
 
 const app = express();
+
+/* Chạy sau proxy của alwaysdata (và sau proxy của Netlify khi giao diện gọi
+   sang), nên IP thật của người dùng nằm ở header X-Forwarded-For. Không bật
+   dòng này thì mọi request đều mang IP của proxy, khiến bộ đếm chống dò mật
+   khẩu theo IP trở thành bộ đếm chung cho tất cả người dùng. */
+app.set("trust proxy", true);
+
 app.use(
   cors({
     origin(origin, callback) {
@@ -103,6 +111,11 @@ app.get("/api/stats", (_req, res) => {
     },
   });
 });
+
+/* Chặn dò mật khẩu. Phải đặt SAU `express.json` (luật theo email cần đọc
+   `req.body.email`) và TRƯỚC router tài khoản. */
+app.use("/api/auth/login", loginRateLimit);
+app.use("/api/auth/register", registerRateLimit);
 
 app.use("/api", carsRouter);
 app.use("/api", contentRouter);

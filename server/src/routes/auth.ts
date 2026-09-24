@@ -12,6 +12,7 @@ import bcrypt from "bcryptjs";
 import { z } from "zod";
 import { db } from "../db.js";
 import { requireAuth, signToken, type AuthUser } from "../middleware/auth.js";
+import { MAX_PASSWORD_LENGTH, MIN_PASSWORD_LENGTH, passwordProblem } from "../password.js";
 
 export const authRouter = Router();
 
@@ -25,7 +26,10 @@ interface UserRow {
 const registerSchema = z.object({
   name: z.string().min(2, "Tên cần ít nhất 2 ký tự.").max(60),
   email: z.string().email("Email chưa đúng định dạng."),
-  password: z.string().min(6, "Mật khẩu cần ít nhất 6 ký tự.").max(100),
+  password: z
+    .string()
+    .min(MIN_PASSWORD_LENGTH, `Mật khẩu cần ít nhất ${MIN_PASSWORD_LENGTH} ký tự.`)
+    .max(MAX_PASSWORD_LENGTH, `Mật khẩu tối đa ${MAX_PASSWORD_LENGTH} ký tự.`),
 });
 
 const loginSchema = z.object({
@@ -42,6 +46,15 @@ authRouter.post("/auth/register", async (req, res) => {
 
   const { name, password } = parsed.data;
   const email = parsed.data.email.trim().toLowerCase();
+
+  /* Độ dài đã được zod kiểm. Ở đây kiểm thêm chất lượng mật khẩu: có nằm trong
+     danh sách bị dò nhiều nhất không, có phải chuỗi quá dễ đoán không, có chứa
+     chính email/tên của người đăng ký không. */
+  const weak = passwordProblem(password, { email, name });
+  if (weak) {
+    res.status(400).json({ error: weak });
+    return;
+  }
 
   const existing = db.prepare("SELECT id FROM users WHERE email = ?").get(email);
   if (existing) {

@@ -359,7 +359,17 @@ Không thấy dòng này thì push **chưa xong**. Nếu hiện popup đăng nh�
 - **`/health` chỉ nên trả `ok`.** Đừng trả đường dẫn tuyệt đối của database, phiên bản thư
   viện hay tên máy chủ — đó là thông tin giúp kẻ tấn công dò hệ thống.
 - **Chặn brute-force cho `/login`.** Không giới hạn số lần thử thì một script đơn giản cũng
-  dò ra mật khẩu yếu. Tối thiểu: đếm số lần sai theo IP + email rồi tạm khoá.
+  dò ra mật khẩu yếu. Cách đã kiểm chứng: đếm số lần **thất bại** theo **cả email và IP**,
+  tạm khoá khi vượt ngưỡng, và **xoá bộ đếm khi đăng nhập đúng** để không khoá oan người gõ
+  nhầm. Dùng **cửa sổ cố định** (không trượt theo từng lần thử) để tài khoản tự mở khoá sau
+  tối đa một khoảng thời gian, tránh bị giữ khoá vĩnh viễn.
+  Hai điều dễ làm sai: **phải bật `trust proxy`** nếu chạy sau proxy (không thì mọi request
+  mang cùng một IP, bộ đếm theo IP thành bộ đếm chung cho cả thế giới), và **đừng đặt ngưỡng
+  theo IP quá chặt** vì nhiều người có thể dùng chung một IP.
+- **Đặt luật cho mật khẩu, đừng chỉ đặt độ dài.** Bcrypt chỉ cứu được tới mức mật khẩu đủ khó
+  đoán. Tối thiểu nên chặn: mật khẩu trong danh sách bị dò nhiều nhất, chuỗi leo thang
+  (`12345678`, `abcdefgh`, `qwertyui`), một ký tự lặp lại, và mật khẩu chứa chính tên/email
+  của người đăng ký (nhớ so cả bản bỏ dấu cách: `Nguoi Test` → `nguoitest123`).
 - **Giới hạn kích thước request** (`express.json({ limit: "200kb" })`). Gói Free chỉ có 256 MB
   RAM — một payload khổng lồ là đủ làm tiến trình chết.
 - **Đừng trả mật khẩu hay hash trong phản hồi.** Kiểm tra bằng mắt một lần: gọi `/login` rồi

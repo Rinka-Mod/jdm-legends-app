@@ -317,16 +317,19 @@ rồi gọi thử), không phải chỉ đọc code.
 | **Header bảo mật** | Có `X-Content-Type-Options: nosniff`, `X-Frame-Options: DENY`, `Referrer-Policy: no-referrer`; `/api/auth` trả `Cache-Control: no-store` |
 | **`.env`** | Bị `.gitignore` chặn. Kiểm tra **cả lịch sử Git**: **chưa từng** có file `.env` thật hay `.sqlite` nào được commit |
 | **Thông tin cá nhân trong repo** | Không có email thật, số điện thoại, IP hay đường dẫn máy cá nhân nào. Ảnh `chihara.jpg` / `logoChatbot.png` **không** nhúng EXIF/GPS |
-| **Thư viện** | Phía server: **0 lỗ hổng**. Phía giao diện: 2 cảnh báo *moderate* ở `react-router-dom` 6.x — **không khai thác được** ở dự án này vì không dùng SSR và không điều hướng tới địa chỉ do người dùng nhập |
+| **Chống dò mật khẩu** | Đăng nhập sai **10 lần/15 phút** → tạm khoá tài khoản đó (`429`). Đăng nhập **đúng** thì xoá bộ đếm nên không khoá oan người gõ nhầm. Tạo tài khoản giới hạn 20 lần/giờ mỗi IP |
+| **Độ mạnh mật khẩu** | Tối thiểu 8 ký tự; chặn mật khẩu phổ biến (`12345678`, `matkhau123`…), chuỗi dễ đoán (`abcdefgh`) và mật khẩu chứa chính tên/email người đăng ký |
+| **Thư viện** | `npm audit --omit=dev` → **0 lỗ hổng** ở cả hai phía (đã nâng `react-router-dom` lên 7.x để dẹp 2 cảnh báo *moderate* của bản 6.x) |
 
 ### Bạn cần tự làm
 
 1. **Đổi `JWT_SECRET`** nếu khoá hiện tại từng bị dán ở đâu đó công khai. Lưu ý quan trọng:
    **log site của alwaysdata in ra TOÀN BỘ biến môi trường, gồm cả `JWT_SECRET`** — đừng bao
    giờ đăng log thô lên GitHub/chat/issue. Đổi khoá rồi thì mọi người phải đăng nhập lại.
-2. **Chưa có chặn brute-force** cho `/api/auth/login` — ai cũng thử được mật khẩu không giới
-   hạn số lần. Cách xử lý ở [`../huong-dan-deploy/README.md`](../huong-dan-deploy/README.md),
-   mục *Bảo mật*.
+2. **Biết mặt trái của việc khoá tài khoản**: kẻ xấu cứ cố tình gõ sai để chặn chính chủ đăng
+   nhập. Cửa sổ đếm là **cửa sổ cố định** nên tài khoản tự mở khoá sau tối đa 15 phút, kể cả
+   khi bị gõ sai liên tục. Muốn thoáng hơn thì chỉnh `EMAIL_LIMIT` trong
+   `server/src/middleware/rateLimit.ts`.
 3. **Repo GitHub đang ở chế độ công khai.** Đó là lựa chọn hợp lệ (LICENSE yêu cầu ghi công),
    nhưng nghĩa là mọi thứ đã commit là công khai **vĩnh viễn, kể cả sau khi xoá**. Cân nhắc kỹ
    trước khi commit ảnh chụp panel, file log hay database.

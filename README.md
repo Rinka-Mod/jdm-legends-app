@@ -32,8 +32,10 @@ jdm-legends-app/
 │   │   ├── index.ts             # Express app + phục vụ bản build client
 │   │   ├── db.ts                # Schema + seed SQLite
 │   │   ├── repository.ts        # Truy vấn xe / timeline / văn hoá / FAQ
+│   │   ├── password.ts          # Chính sách mật khẩu (độ mạnh tối thiểu)
 │   │   ├── data/                # Dữ liệu gốc (cars, content, faq)
 │   │   ├── middleware/auth.ts   # JWT: requireAuth / optionalAuth
+│   │   ├── middleware/rateLimit.ts  # Chặn dò mật khẩu / spam tạo tài khoản
 │   │   └── routes/              # cars, content, auth, garage
 │   └── .env.example
 ├── client/                      # Front-End
@@ -170,6 +172,8 @@ thẻ xe trượt ngang + chấm chỉ mục.
 - **Deep link**: URL phản ánh trạng thái (`/?car=supra-a80`), có nút Back của trình duyệt hoạt động.
 - **Trang riêng cho từng xe**: `/car/:id` kèm nút xe trước / xe sau.
 - **Preloader bỏ qua được**: bấm vào bất kỳ đâu để vào thẳng, ghi nhớ trong `sessionStorage`.
+- **Bảo mật**: chặn dò mật khẩu theo tài khoản và theo IP, chính sách mật khẩu tối thiểu,
+  header bảo mật cơ bản, và **từ chối khởi động** nếu production thiếu `JWT_SECRET`.
 - **Sửa lỗi nhỏ**: `href="#"` nay trỏ tới đích thật; thêm thẻ Open Graph;
   nút `/` focus ô tìm kiếm; phím `←/→` chuyển xe trong hồ sơ; `Esc` đóng mọi lớp phủ.
 
